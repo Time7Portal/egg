@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://whmjiw60db4y"]
+
+[ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://ui/money.tscn" id="1_ry0ax"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_7vhny")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.44843, 0.893818, 0, -0.893818, 0.44843, 0, 2.27265, 1.25826)
+
+[node name="Money" parent="." instance=ExtResource("1_ry0ax")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+grow_horizontal = 0
+grow_vertical = 1
