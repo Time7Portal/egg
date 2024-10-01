@@ -1,12 +1,100 @@
 extends Node3D
 
-@onready var camera = $Camera3D
+@onready var gTimer = $Timer;
 
-var coin: int = 0;
+@export var gChicken: PackedScene;
+@export var gChick: PackedScene;
+@export var gEgg: PackedScene;
+
+var gSavePath: String =  "user://saveFile.save";
+
+var gChickenContainer: Array[PackedScene];
+var gChickContainer: Array[PackedScene];
+var gEggContainer: Array[PackedScene];
+var gCoin: int = 0;
 
 func _ready():
-	#get save file from server? or client?
-	pass;
+	readSaveFile();
+	gTimer.start();
+	
+func _on_timer_timeout() -> void:
+	writeSaveFile(false);
+	gTimer.start();
+	
+func readSaveFile():
+	if not FileAccess.file_exists(gSavePath):
+		return;
+		
+	var file = FileAccess.open(gSavePath, FileAccess.READ);
+	if file == null:
+		writeSaveFile(true);
+		
+	var json = JSON.new();
+	var parse_result = json.parse(file.get_line());
+	if not parse_result == OK:
+		print("JSON Parsing Error: ", json.get_error_message(), " in ", json.get_line(), "at line ", json.get_error_line());
+		return;
+	
+	var node_data = json.get_data();
+	file.close();
+	
+	gCoin = node_data["Coin"];
+	
+	var minX = -3;
+	var maxX = 3;
+	var minZ = -5;
+	var maxZ = 5;
+	var rng = RandomNumberGenerator.new();
+	rng.randomize();
+		
+	for i in node_data["Chicken"]:
+		var randX = rng.randi_range(minX, maxX);
+		var randZ = rng.randi_range(minZ, maxZ);
+		var chicken = spawn(gChicken, Vector3(randX, 0, randZ));
+		gChickenContainer.push_back(chicken);
+		
+	for i in node_data["Chick"]:
+		var randX = rng.randi_range(minX, maxX);
+		var randZ = rng.randi_range(minZ, maxZ);
+		var chick = spawn(gChick, Vector3(randX, 0, randZ));
+		gChickContainer.push_back(chick);
+		
+	for i in node_data["Egg"]:
+		var randX = rng.randi_range(minX, maxX);
+		var randZ = rng.randi_range(minZ, maxZ);
+		var egg = spawn(gEgg, Vector3(randX, 0, randZ));
+		gEggContainer.push_back(egg);
+	
+func spawn(prefab: PackedScene, pos: Vector3):
+	print("Spawn ", prefab.resource_path , " in Pos: ", pos);
+	var instance = prefab.instantiate();
+	add_child(instance);
+	instance.position = pos;
+	
+func writeSaveFile(initial: bool):
+	print("Save: ", gSavePath);
+	var file = FileAccess.open(gSavePath, FileAccess.WRITE);
+	
+	if initial == false:
+		var saveData = {
+			"Chicken": gChickContainer.size(), 
+			"Chick": gChickContainer.size(), 
+			"Egg": gEggContainer.size(), 
+			"Coin": gCoin,
+		};
+		var saveDataString = JSON.stringify(saveData);
+		file.store_line(saveDataString);
+	else:
+		var saveData = {
+			"Chicken": 2, 
+			"Chick": 0, 
+			"Egg": 0, 
+			"Coin": gCoin,
+		};
+		var saveDataString = JSON.stringify(saveData);
+		file.store_line(saveDataString);
+	
+	file.close();
 	
 func _input(event):
 	if event.is_pressed() == false:
@@ -41,11 +129,11 @@ func findEgg(m_pos):
 	return result["collider"]
 
 func acquireEgg(node):
-	coin += 1;
+	gCoin += 1;
 	
 	#https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_format_string.html
 	var format_string = "$ %d";
-	var actual_string = format_string % coin;
+	var actual_string = format_string % gCoin;
 	get_node("Money/Label").text = actual_string;
 	
 	node.queue_free();

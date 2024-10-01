@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bky28uib6kuuo"]
+
+[ext_resource type="ArrayMesh" uid="uid://46wft07m78co" path="res://game/Model/Chick.res" id="1_ghjs1"]
+
+[node name="Chick" type="MeshInstance3D"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+mesh = ExtResource("1_ghjs1")

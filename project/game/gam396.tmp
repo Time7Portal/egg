@@ -3,19 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://ui/money.tscn" id="1_ry0ax"]
 [ext_resource type="Script" path="res://game/Manager.gd" id="1_tryfc"]
 [ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://game/Egg.tscn" id="2_2nevv"]
-[ext_resource type="PackedScene" uid="uid://ccf4d1bgru7c7" path="res://game/Chicken.tscn" id="2_oct4e"]
-[ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://game/Chick.tscn" id="3_hsf4w"]
+[ext_resource type="PackedScene" uid="uid://dpcsp046u70re" path="res://game/Model/chick.glb" id="5_j7kye"]
+[ext_resource type="PackedScene" uid="uid://5dyln1h8i71l" path="res://game/Model/chicken.glb" id="6_824db"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_tryfc")
-gChicken = ExtResource("2_oct4e")
-gChick = ExtResource("3_hsf4w")
-gEgg = ExtResource("2_2nevv")
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 60.0
 
 [node name="Money" parent="." instance=ExtResource("1_ry0ax")]
 anchors_preset = 1
@@ -25,16 +19,27 @@ grow_horizontal = 0
 grow_vertical = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.44843, 0.893818, 0, -0.893818, 0.44843, 0, 16.286, 8.984)
+transform = Transform3D(1, 0, 0, 0, 0.44843, 0.893818, 0, -0.893818, 0.44843, 2.96042, 16.2861, 8.98355)
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7vhny")
+
+[node name="Egg" parent="." instance=ExtResource("2_2nevv")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.449566, 0.328382, -0.46495)
+
+[node name="Egg2" parent="." instance=ExtResource("2_2nevv")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -4.41735, 0.309421, -0.508208)
 
 [node name="Dev" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Dev"]
 transform = Transform3D(1, 0, 0, 0, 0.64679, 0.762668, 0, -0.762668, 0.64679, 0, 10, 0)
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="chick" parent="Dev" instance=ExtResource("5_j7kye")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.44424, -9.53674e-07, 3.19179)
+
+[node name="chicken" parent="Dev" instance=ExtResource("6_824db")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96836, -9.53674e-07, -5.4522)
+
 [connection signal="gui_input" from="Money" to="." method="_on_money_gui_input"]
