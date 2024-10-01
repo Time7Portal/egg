@@ -1,7 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ccf4d1bgru7c7"]
+[gd_scene load_steps=2 format=3 uid="uid://be1wl3yrnefad"]
 
-[ext_resource type="ArrayMesh" uid="uid://dvojfv80kwlc6" path="res://game/Model/Hen.res" id="1_a4h74"]
+[ext_resource type="ArrayMesh" uid="uid://cyhawiwdpltmu" path="res://game/Model/Hen.res" id="1_a4h74"]
 
-[node name="Chicken" type="MeshInstance3D"]
+[node name="Hen" type="MeshInstance3D"]
 transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
 mesh = ExtResource("1_a4h74")
