@@ -1,10 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=5 format=3 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://ui/money.tscn" id="1_ry0ax"]
 [ext_resource type="Script" path="res://game/Manager.gd" id="1_tryfc"]
 [ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://game/Egg.tscn" id="2_2nevv"]
-[ext_resource type="PackedScene" uid="uid://dpcsp046u70re" path="res://game/Model/chick.glb" id="5_j7kye"]
-[ext_resource type="PackedScene" uid="uid://5dyln1h8i71l" path="res://game/Model/chicken.glb" id="6_824db"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
 
@@ -26,20 +24,14 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7vhny")
 
 [node name="Egg" parent="." instance=ExtResource("2_2nevv")]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.449566, 0.328382, -0.46495)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.429574, 0.941751, -0.487906)
 
 [node name="Egg2" parent="." instance=ExtResource("2_2nevv")]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -4.41735, 0.309421, -0.508208)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.44719, 0.727421, -1.55344)
 
 [node name="Dev" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Dev"]
 transform = Transform3D(1, 0, 0, 0, 0.64679, 0.762668, 0, -0.762668, 0.64679, 0, 10, 0)
-
-[node name="chick" parent="Dev" instance=ExtResource("5_j7kye")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.44424, -9.53674e-07, 3.19179)
-
-[node name="chicken" parent="Dev" instance=ExtResource("6_824db")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96836, -9.53674e-07, -5.4522)
 
 [connection signal="gui_input" from="Money" to="." method="_on_money_gui_input"]
