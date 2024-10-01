@@ -2,13 +2,15 @@ extends Node3D
 
 @onready var gTimer = $Timer;
 
-@export var gChicken: PackedScene;
+@export var gHen: PackedScene;
+@export var gRooster: PackedScene;
 @export var gChick: PackedScene;
 @export var gEgg: PackedScene;
 
 var gSavePath: String =  "user://saveFile.save";
 
-var gChickenContainer: Array[PackedScene];
+var gHenContainer: Array[PackedScene];
+var gRoosterContainer: Array[PackedScene];
 var gChickContainer: Array[PackedScene];
 var gEggContainer: Array[PackedScene];
 var gCoin: int = 0;
@@ -47,18 +49,21 @@ func readSaveFile():
 	var rng = RandomNumberGenerator.new();
 	rng.randomize();
 		
-	for i in node_data["Chicken"]:
+	for i in node_data["Hen"]:
 		var randX = rng.randi_range(minX, maxX);
 		var randZ = rng.randi_range(minZ, maxZ);
-		var chicken = spawn(gChicken, Vector3(randX, 0, randZ));
-		gChickenContainer.push_back(chicken);
-		
+		var hen = spawn(gHen, Vector3(randX, 0, randZ));
+		gHenContainer.push_back(hen);
+	for i in node_data["Rooster"]:
+		var randX = rng.randi_range(minX, maxX);
+		var randZ = rng.randi_range(minZ, maxZ);
+		var rooster = spawn(gRooster, Vector3(randX, 0, randZ));
+		gRoosterContainer.push_back(rooster);
 	for i in node_data["Chick"]:
 		var randX = rng.randi_range(minX, maxX);
 		var randZ = rng.randi_range(minZ, maxZ);
 		var chick = spawn(gChick, Vector3(randX, 0, randZ));
 		gChickContainer.push_back(chick);
-		
 	for i in node_data["Egg"]:
 		var randX = rng.randi_range(minX, maxX);
 		var randZ = rng.randi_range(minZ, maxZ);
@@ -77,7 +82,8 @@ func writeSaveFile(initial: bool):
 	
 	if initial == false:
 		var saveData = {
-			"Chicken": gChickContainer.size(), 
+			"Hen": gHenContainer.size(), 
+			"Rooster": gRoosterContainer.size(), 
 			"Chick": gChickContainer.size(), 
 			"Egg": gEggContainer.size(), 
 			"Coin": gCoin,
@@ -86,7 +92,8 @@ func writeSaveFile(initial: bool):
 		file.store_line(saveDataString);
 	else:
 		var saveData = {
-			"Chicken": 2, 
+			"Hen": 1, 
+			"Rooster": 1, 
 			"Chick": 0, 
 			"Egg": 0, 
 			"Coin": gCoin,

@@ -10,7 +10,8 @@
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_tryfc")
-gChicken = ExtResource("2_oct4e")
+gHen = ExtResource("2_oct4e")
+gRooster = ExtResource("2_oct4e")
 gChick = ExtResource("3_hsf4w")
 gEgg = ExtResource("2_2nevv")
 
