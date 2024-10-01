@@ -17,6 +17,7 @@ var gCoin: int = 0;
 
 func _ready():
 	readSaveFile();
+	refreshCoinUI();
 	gTimer.start();
 	
 func _on_timer_timeout() -> void:
@@ -137,10 +138,11 @@ func findEgg(m_pos):
 
 func acquireEgg(node):
 	gCoin += 1;
-	
+	refreshCoinUI();
+	node.queue_free();
+
+func refreshCoinUI():
 	#https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_format_string.html
 	var format_string = "$ %d";
 	var actual_string = format_string % gCoin;
 	get_node("Money/Label").text = actual_string;
-	
-	node.queue_free();
