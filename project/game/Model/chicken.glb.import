@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://5dyln1h8i71l"
+uid="uid://difxn7dtfvrvv"
 path="res://.godot/imported/chicken.glb-e894ad77dfbaf2483409fec543453cb4.scn"
 
 [deps]
@@ -33,14 +33,14 @@ animation/import_rest_as_RESET=false
 import_script/path=""
 _subresources={
 "meshes": {
-"chicken_Cube_001": {
+"chicken_Cube": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 60.0,
 "lods/normal_split_angle": 25.0,
 "save_to_file/enabled": true,
-"save_to_file/path": "res://game/Model/chicken_Cube_001.res"
+"save_to_file/path": "res://game/Model/chicken_Cube.res"
 }
 }
 }
