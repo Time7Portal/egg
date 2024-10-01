@@ -1,17 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=8 format=3 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://ui/money.tscn" id="1_ry0ax"]
 [ext_resource type="Script" path="res://game/Manager.gd" id="1_tryfc"]
 [ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://game/Egg.tscn" id="2_2nevv"]
-[ext_resource type="PackedScene" path="res://game/Chicken.tscn" id="2_oct4e"]
-[ext_resource type="PackedScene" path="res://game/Chick.tscn" id="3_hsf4w"]
+[ext_resource type="PackedScene" uid="uid://ccf4d1bgru7c7" path="res://game/Hen.tscn" id="2_3lcty"]
+[ext_resource type="PackedScene" uid="uid://ccu2s4uogr2qc" path="res://game/Rooster.tscn" id="2_m7af2"]
+[ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://game/Chick.tscn" id="3_hsf4w"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_tryfc")
-gHen = ExtResource("2_oct4e")
-gRooster = ExtResource("2_oct4e")
+gHen = ExtResource("2_3lcty")
+gRooster = ExtResource("2_m7af2")
 gChick = ExtResource("3_hsf4w")
 gEgg = ExtResource("2_2nevv")
 

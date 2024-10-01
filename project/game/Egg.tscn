@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://hyj2ny1ibqmq"]
 
-[ext_resource type="ArrayMesh" path="res://game/Model/Egg.res" id="1_lm1lq"]
+[ext_resource type="ArrayMesh" uid="uid://uyvbq6j21dy8" path="res://game/Model/Egg.res" id="1_lm1lq"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6xp8b"]
 
