@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://ui/money.tscn" id="1_ry0ax"]
 [ext_resource type="Script" path="res://game/Manager.gd" id="1_tryfc"]
 [ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://game/Egg.tscn" id="2_2nevv"]
-[ext_resource type="PackedScene" uid="uid://ccf4d1bgru7c7" path="res://game/Chicken.tscn" id="2_oct4e"]
-[ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://game/Chick.tscn" id="3_hsf4w"]
+[ext_resource type="PackedScene" path="res://game/Chicken.tscn" id="2_oct4e"]
+[ext_resource type="PackedScene" path="res://game/Chick.tscn" id="3_hsf4w"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
 
