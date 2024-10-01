@@ -1,15 +1,17 @@
 [gd_scene load_steps=3 format=3 uid="uid://hyj2ny1ibqmq"]
 
-[ext_resource type="ArrayMesh" uid="uid://2uv4ybr5v6gq" path="res://game/Model/egg.obj" id="1_82be5"]
+[ext_resource type="PackedScene" uid="uid://bm5lt07blksie" path="res://game/Model/egg.glb" id="1_6y5ih"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6xp8b"]
 
-[node name="Egg" type="MeshInstance3D"]
+[node name="Egg" type="Node3D"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
-mesh = ExtResource("1_82be5")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
+[node name="egg" parent="StaticBody3D" instance=ExtResource("1_6y5ih")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 2.54772, 0)
 shape = SubResource("SphereShape3D_6xp8b")
