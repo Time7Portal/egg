@@ -8,6 +8,12 @@
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_tryfc")
+egg = ExtResource("2_2nevv")
+
+[node name="Manager" type="Node" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.44843, 0.893818, 0, -0.893818, 0.44843, 0, 2.27265, 1.25826)
 
 [node name="Money" parent="." instance=ExtResource("1_ry0ax")]
 anchors_preset = 1
@@ -16,10 +22,7 @@ anchor_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 1
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.44843, 0.893818, 0, -0.893818, 0.44843, 0, 2.27265, 1.25826)
-
-[node name="Ground" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_7vhny")
 
 [node name="Egg" parent="." instance=ExtResource("2_2nevv")]
@@ -28,9 +31,7 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.449566, 0.328382, -0
 [node name="Egg2" parent="." instance=ExtResource("2_2nevv")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.49223, 0.309421, -0.508208)
 
-[node name="Dev" type="Node" parent="."]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Dev"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.64679, 0.762668, 0, -0.762668, 0.64679, 0, 2, 0)
 
 [connection signal="gui_input" from="Money" to="." method="_on_money_gui_input"]
