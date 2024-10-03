@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dtl7w3hxoeve2"]
+[gd_scene load_steps=3 format=3 uid="uid://ccu2s4uogr2qc"]
 
-[ext_resource type="ArrayMesh" path="res://game/Model/Rooster.res" id="1_lpi22"]
+[ext_resource type="ArrayMesh" uid="uid://cyhawiwdpltmu" path="res://game/Model/Rooster.res" id="1_lpi22"]
+[ext_resource type="Script" path="res://game/Script/Animal.gd" id="2_dxp02"]
 
 [node name="Rooster" type="MeshInstance3D"]
 transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
 mesh = ExtResource("1_lpi22")
+script = ExtResource("2_dxp02")

@@ -1,4 +1,5 @@
 extends Node3D
+class_name Manager
 
 @onready var gTimer = $Timer;
 
