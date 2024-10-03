@@ -63,13 +63,9 @@ func _process(delta: float) -> void:
 				print("Move: ", self.name, " to ", gTargetPosition);
 				draw_debug_sphere(gTargetPosition, 0.2);
 				
-				var test = self.name;
 				var dir:Vector3 = gTargetPosition - self.position;
 				dir = dir.normalized();
-				var test2 = dir.length();
-				var forward:Vector3 = -self.transform.basis.z;
 				var angle:float = Vector3(-1, 0, 0).angle_to(dir);
-				print(self.rotation.y)
 				if Vector3(-1, 0, 0).cross(dir).y < 0:
 					self.rotation.y = -angle;
 				else:
