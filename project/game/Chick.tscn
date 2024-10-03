@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bky28uib6kuuo"]
 
-[ext_resource type="ArrayMesh" uid="uid://46wft07m78co" path="res://game/Model/Chick.res" id="1_ghjs1"]
-[ext_resource type="Script" path="res://game/Script/Animal.gd" id="2_7qnst"]
+[ext_resource type="ArrayMesh" uid="uid://46wft07m78co" path="res://Game/Model/Chick.res" id="1_ghjs1"]
+[ext_resource type="Script" path="res://Game/Script/Animal.gd" id="2_7qnst"]
 
 [node name="Chick" type="MeshInstance3D"]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)

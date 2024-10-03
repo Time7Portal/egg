@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dpcsp046u70re"
-path="res://.godot/imported/chick.glb-9a016768bccfb224afb9743091e98940.scn"
+path="res://.godot/imported/chick.glb-b6d3e3ed653d6e3fbfe6a4a250fa64f5.scn"
 
 [deps]
 
-source_file="res://game/Model/chick.glb"
-dest_files=["res://.godot/imported/chick.glb-9a016768bccfb224afb9743091e98940.scn"]
+source_file="res://Game/Model/chick.glb"
+dest_files=["res://.godot/imported/chick.glb-b6d3e3ed653d6e3fbfe6a4a250fa64f5.scn"]
 
 [params]
 

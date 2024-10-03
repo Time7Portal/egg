@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://difxn7dtfvrvv"
-path="res://.godot/imported/hen.glb-732ab987232c991bf39afc118bbc2f34.scn"
+path="res://.godot/imported/hen.glb-3890c154f22710273ddfff930ad74288.scn"
 
 [deps]
 
-source_file="res://game/Model/hen.glb"
-dest_files=["res://.godot/imported/hen.glb-732ab987232c991bf39afc118bbc2f34.scn"]
+source_file="res://Game/Model/hen.glb"
+dest_files=["res://.godot/imported/hen.glb-3890c154f22710273ddfff930ad74288.scn"]
 
 [params]
 

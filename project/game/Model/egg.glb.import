@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bm5lt07blksie"
-path="res://.godot/imported/egg.glb-ca934275a206813f9d7a8a2babcc2373.scn"
+path="res://.godot/imported/egg.glb-7d2d84157c22a87f767d90ff160cc964.scn"
 
 [deps]
 
-source_file="res://game/Model/egg.glb"
-dest_files=["res://.godot/imported/egg.glb-ca934275a206813f9d7a8a2babcc2373.scn"]
+source_file="res://Game/Model/egg.glb"
+dest_files=["res://.godot/imported/egg.glb-7d2d84157c22a87f767d90ff160cc964.scn"]
 
 [params]
 
