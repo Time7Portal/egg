@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://whmjiw60db4y"]
+
+[ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://ui/money.tscn" id="1_ry0ax"]
+[ext_resource type="Script" path="res://game/Script/Manager.gd" id="1_tryfc"]
+[ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://game/Egg.tscn" id="2_2nevv"]
+[ext_resource type="PackedScene" uid="uid://ccf4d1bgru7c7" path="res://game/Hen.tscn" id="2_3lcty"]
+[ext_resource type="PackedScene" uid="uid://ccu2s4uogr2qc" path="res://game/Rooster.tscn" id="2_m7af2"]
+[ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://game/Chick.tscn" id="3_hsf4w"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_tryfc")
+gHen = ExtResource("2_3lcty")
+gRooster = ExtResource("2_m7af2")
+gChick = ExtResource("3_hsf4w")
+gEgg = ExtResource("2_2nevv")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 60.0
+
+[node name="Money" parent="." instance=ExtResource("1_ry0ax")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+grow_horizontal = 0
+grow_vertical = 1
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.44843, 0.893818, 0, -0.893818, 0.44843, 0, 16.286, 8.984)
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+mesh = SubResource("PlaneMesh_7vhny")
+
+[node name="Dev" type="Node" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Dev"]
+transform = Transform3D(1, 0, 0, 0, 0.64679, 0.762668, 0, -0.762668, 0.64679, 0, 10, 0)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="gui_input" from="Money" to="." method="_on_money_gui_input"]

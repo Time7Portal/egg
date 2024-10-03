@@ -1,6 +1,9 @@
 extends Node3D
 class_name Manager
 
+static var gGroundWitdh: float = 3;
+static var gGroundHeight: float = 5;
+
 @onready var gTimer = $Timer;
 
 @export var gHen: PackedScene;
@@ -44,37 +47,33 @@ func readSaveFile():
 	
 	gCoin = node_data["Coin"];
 	
-	var minX = -3;
-	var maxX = 3;
-	var minZ = -5;
-	var maxZ = 5;
 	var rng = RandomNumberGenerator.new();
 	rng.randomize();
 		
 	for i in node_data["Hen"]:
-		var randX = rng.randi_range(minX, maxX);
-		var randZ = rng.randi_range(minZ, maxZ);
-		var hen = spawn(gHen, Vector3(randX, 0, randZ));
+		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
+		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
+		var hen:Node = spawn(gHen, Vector3(randX, 0, randZ));
 		gHenContainer.push_back(hen);
 	for i in node_data["Rooster"]:
-		var randX = rng.randi_range(minX, maxX);
-		var randZ = rng.randi_range(minZ, maxZ);
-		var rooster = spawn(gRooster, Vector3(randX, 0, randZ));
+		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
+		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
+		var rooster:Node = spawn(gRooster, Vector3(randX, 0, randZ));
 		gRoosterContainer.push_back(rooster);
 	for i in node_data["Chick"]:
-		var randX = rng.randi_range(minX, maxX);
-		var randZ = rng.randi_range(minZ, maxZ);
-		var chick = spawn(gChick, Vector3(randX, 0, randZ));
+		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
+		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
+		var chick:Node = spawn(gChick, Vector3(randX, 0, randZ));
 		gChickContainer.push_back(chick);
 	for i in node_data["Egg"]:
-		var randX = rng.randi_range(minX, maxX);
-		var randZ = rng.randi_range(minZ, maxZ);
-		var egg = spawn(gEgg, Vector3(randX, 0, randZ));
+		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
+		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
+		var egg:Node = spawn(gEgg, Vector3(randX, 0, randZ));
 		gEggContainer.push_back(egg);
 	
 func spawn(prefab: PackedScene, pos: Vector3):
 	print("Spawn ", prefab.resource_path , " in Pos: ", pos);
-	var instance = prefab.instantiate();
+	var instance:Node = prefab.instantiate();
 	add_child(instance);
 	instance.position = pos;
 	
@@ -100,7 +99,7 @@ func writeSaveFile(initial: bool):
 			"Egg": 0, 
 			"Coin": gCoin,
 		};
-		var saveDataString = JSON.stringify(saveData);
+		var saveDataString:String = JSON.stringify(saveData);
 		file.store_line(saveDataString);
 	
 	file.close();
@@ -112,14 +111,14 @@ func _input(event):
 	if event is InputEventMouse == false:
 		return;
 		
-	var mousePosition = event.position;
-	var result = findEgg(mousePosition);
+	var mousePosition:Vector2 = event.position;
+	var result:Node = findEgg(mousePosition);
 	if result == null:
 		return;
 	
 	acquireEgg(result.get_parent());
 
-func findEgg(m_pos):
+func findEgg(m_pos) -> Node:
 	var cam = get_viewport().get_camera_3d()
 	var ray_start = cam.project_ray_origin(m_pos)
 	var ray_end = ray_start + cam.project_ray_normal(m_pos) * 2000
@@ -144,6 +143,6 @@ func acquireEgg(node):
 
 func refreshCoinUI():
 	#https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_format_string.html
-	var format_string = "$ %d";
-	var actual_string = format_string % gCoin;
+	var format_string:String = "$ %d";
+	var actual_string:String = format_string % gCoin;
 	get_node("Money/Label").text = actual_string;
