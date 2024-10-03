@@ -1,10 +1,11 @@
 extends Node
 class_name Animal;
 
-@export var gMaxIdleTime:float = 10.0;
+@export var gMaxIdleTime:float = 5.0;
 @export var gMinIdleTime:float = 0.3;
-@export var gMaxSpeed:float = 0.6;
-@export var gMinSpeed:float = 0.3;
+@export var gMaxSpeed:float = 2.6;
+@export var gMinSpeed:float = 2.3;
+@export var gJumpSpeed:float = 20.0;
 
 enum STATE {IDLE, MOVE}
 
@@ -13,6 +14,13 @@ var gIdleTime:float = 0;
 var gCurrentIdleTime:float = 0;
 var gTargetPosition:Vector3 = Vector3(0, 0, 0);
 var gSpeed = 0; #UnitLength per second
+
+# 지구인 : sin 함수를 이용한 주기적 점프 구현을 위한 계수
+var gJumpOmega = 0.0;
+
+# 지구인 : 즉시 회전을 반영하지 않고 목표한 회전값을 저장해 천천히 회전
+var gTargetRotationY = 0.0;
+
 
 #def
 var debugTargetPositionSphere: Node = null;
@@ -67,21 +75,34 @@ func _process(delta: float) -> void:
 				dir = dir.normalized();
 				var angle:float = Vector3(-1, 0, 0).angle_to(dir);
 				if Vector3(-1, 0, 0).cross(dir).y < 0:
-					self.rotation.y = -angle;
+					gTargetRotationY = -angle;
 				else:
-					self.rotation.y = angle;
+					gTargetRotationY = angle;
 				
 				gState = STATE.MOVE;
+				
 		STATE.MOVE:
+			# dist 계산을 위해 y 점프 값 초기화
+			self.position.y = 0.0;
+			
 			var dir:Vector3 = gTargetPosition - self.position;
 			dir = dir.normalized();
 			var moveDelta:Vector3 = dir * gSpeed * delta;
 			var dist:Vector3 = gTargetPosition - (self.position + moveDelta);
 			if dist.length() <= 0.05:
 				moveDelta = gTargetPosition - self.position;
+				#gState = STATE.IDLE;
 				changeStateIDLE();
 				debugTargetPositionSphere.queue_free();
 				
 			self.position += moveDelta;
+			
+			# 지구인 : Gently shake the character up and down to create natural feeling
+			# 위아래로 살짝씩 흔들어서 자연스럽게 이동하는 느낌으로 구현
+			gJumpOmega += delta * gJumpSpeed;
+			self.position.y = (sin(gJumpOmega) + 1) * 0.3;
+			
+			# 지구인 : 부드러운 회전 구현
+			self.rotation.y -= (self.rotation.y - gTargetRotationY) * delta * 2.0;
 		_:
 			print("Error!");

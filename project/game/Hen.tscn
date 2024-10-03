@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://ccf4d1bgru7c7"]
+[gd_scene load_steps=3 format=3 uid="uid://be1wl3yrnefad"]
 
-[ext_resource type="ArrayMesh" uid="uid://dvojfv80kwlc6" path="res://game/Model/Hen.res" id="1_kh6o4"]
+[ext_resource type="ArrayMesh" uid="uid://cyhawiwdpltmu" path="res://game/Model/Hen.res" id="1_kh6o4"]
 [ext_resource type="Script" path="res://game/Script/Animal.gd" id="2_ealpp"]
 
 [node name="Hen" type="MeshInstance3D"]
