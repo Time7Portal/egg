@@ -1,28 +1,36 @@
 extends Node
 class_name Animal;
 
+#region GlobalVariable
 @export var gMaxIdleTime:float = 5.0;
 @export var gMinIdleTime:float = 0.3;
 @export var gMaxSpeed:float = 2.6;
 @export var gMinSpeed:float = 2.3;
 @export var gJumpSpeed:float = 20.0;
+#endregion
 
+#region Animation and Movement
 enum STATE {IDLE, MOVE}
 
 var gState:STATE = STATE.IDLE;
 var gIdleTime:float = 0;
 var gCurrentIdleTime:float = 0;
 var gTargetPosition:Vector3 = Vector3(0, 0, 0);
-var gSpeed = 0; #UnitLength per second
-
 # 지구인 : sin 함수를 이용한 주기적 점프 구현을 위한 계수
 var gJumpOmega = 0.0;
-
 # 지구인 : 즉시 회전을 반영하지 않고 목표한 회전값을 저장해 천천히 회전
-var gTargetRotationY = 0.0;
+var gTargetRotationY:float = 0.0;
+#endregion
 
+#region Status
+class Status:
+	var _speed:float = 0; # UnitLength per second
+	var _jumpHeight:float = 0; # MaxHeight
+	
+var _status:Status;
+#endregion
 
-#dev
+#region Develop
 var debugTargetPositionSphere: Node = null;
 
 # Add a debug sphere at global location.
@@ -46,18 +54,19 @@ func draw_debug_sphere(location, size):
 	debugTargetPositionSphere.mesh = sphere
 	scene_root.add_child(debugTargetPositionSphere)
 	debugTargetPositionSphere.global_transform.origin = location
-	
-#dev
+#endregion
 
 func changeStateIDLE() -> void:	
 	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 	gIdleTime = rng.randf_range(gMinIdleTime, gMaxIdleTime);
-	gSpeed = rng.randf_range(gMinSpeed, gMaxSpeed);
-	print("Idle: ", self.name, " time: ", gIdleTime, ", speed: ", gSpeed);
 	gCurrentIdleTime = 0;
 	gState = STATE.IDLE;
+	print("Idle: ", self.name, " time: ", gIdleTime);
 
 func _ready() -> void:
+	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
+	_status = Status.new();
+	_status._speed = rng.randf_range(gMinSpeed, gMaxSpeed);
 	changeStateIDLE();
 
 func _process(delta: float) -> void:
@@ -80,14 +89,13 @@ func _process(delta: float) -> void:
 					gTargetRotationY = angle;
 				
 				gState = STATE.MOVE;
-				
 		STATE.MOVE:
 			# dist 계산을 위해 y 점프 값 초기화
 			self.position.y = 0.0;
 			
 			var dir:Vector3 = gTargetPosition - self.position;
 			dir = dir.normalized();
-			var moveDelta:Vector3 = dir * gSpeed * delta;
+			var moveDelta:Vector3 = dir * _status._speed * delta;
 			var dist:Vector3 = gTargetPosition - (self.position + moveDelta);
 			if dist.length() <= 0.05:
 				moveDelta = gTargetPosition - self.position;
