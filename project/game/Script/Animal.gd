@@ -4,8 +4,6 @@ class_name Animal;
 #region GlobalVariable
 @export var gMaxIdleTime:float = 5.0;
 @export var gMinIdleTime:float = 0.3;
-@export var gMaxSpeed:float = 2.6;
-@export var gMinSpeed:float = 2.3;
 @export var gJumpSpeed:float = 20.0;
 #endregion
 
@@ -24,8 +22,11 @@ var gTargetRotationY:float = 0.0;
 
 #region Status
 class Status:
+	var _lifeTime:float = 0;
 	var _speed:float = 0; # UnitLength per second
-	var _jumpHeight:float = 0; # MaxHeight
+	var _jumpHeight:float = 0.3; # MaxHeight, 현재는 고정으로 사용
+	var _productivity:float = 0;
+	var _aggression:float = 0;
 	
 var _status:Status;
 #endregion
@@ -64,10 +65,18 @@ func changeStateIDLE() -> void:
 	print("Idle: ", self.name, " time: ", gIdleTime);
 
 func _ready() -> void:
+	changeStateIDLE();
+	
+func initializeStatus(lifeTime:float, speed:float, productivity:float) -> void:
 	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 	_status = Status.new();
-	_status._speed = rng.randf_range(gMinSpeed, gMaxSpeed);
-	changeStateIDLE();
+	_status._lifeTime = lifeTime;
+	_status._speed = speed;
+	_status._productivity = productivity;
+	Manager.onAddAnimal(_status._productivity);
+	
+func _exit_tree() -> void:
+	Manager.onRemoveAnimal(_status._productivity);
 
 func _process(delta: float) -> void:
 	match gState:
@@ -108,7 +117,7 @@ func _process(delta: float) -> void:
 			# 지구인 : Gently shake the character up and down to create natural feeling
 			# 위아래로 살짝씩 흔들어서 자연스럽게 이동하는 느낌으로 구현
 			gJumpOmega += delta * gJumpSpeed;
-			self.position.y = (sin(gJumpOmega) + 1) * 0.3;
+			self.position.y = (sin(gJumpOmega) + 1) * _status._jumpHeight;
 			
 			# 지구인 : 부드러운 회전 구현
 			self.rotation.y -= (self.rotation.y - gTargetRotationY) * delta * 2.0;

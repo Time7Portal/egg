@@ -6,18 +6,29 @@ static var gGroundHeight: float = 5;
 
 @onready var gTimer = $Timer;
 
+@export var gMaxLifeTime:float = 3600 * 24 * 50;	# second
+@export var gMinLifeTime:float = 3600 * 24 * 7;	# second
+@export var gMaxProductivity:float = 1;
+@export var gMinProductivity:float = 0;
+@export var gMaxSpeed:float = 2.6;
+@export var gMinSpeed:float = 2.3;
+
 @export var gHen: PackedScene;
 @export var gRooster: PackedScene;
 @export var gChick: PackedScene;
 @export var gEgg: PackedScene;
 
-var gSavePath: String =  "user://saveFile.save";
+static var gSavePath: String =  "user://saveFile.save";
 
-var gHenContainer: Array[PackedScene];
-var gRoosterContainer: Array[PackedScene];
-var gChickContainer: Array[PackedScene];
-var gEggContainer: Array[PackedScene];
-var gCoin: int = 0;
+static var gHenContainer: Array[PackedScene];
+static var gRoosterContainer: Array[PackedScene];
+static var gChickContainer: Array[PackedScene];
+static var gEggContainer: Array[PackedScene];
+static var gCollectionEggCount: int = 0;
+
+static var gTotalProductivity: float = 0;
+
+static var gCoin: int = 0;
 
 func _ready():
 	readSaveFile();
@@ -45,6 +56,7 @@ func readSaveFile():
 	var node_data = json.get_data();
 	file.close();
 	
+	gCollectionEggCount = node_data["CollectionEgg"];
 	gCoin = node_data["Coin"];
 	
 	var rng = RandomNumberGenerator.new();
@@ -71,12 +83,6 @@ func readSaveFile():
 		var egg:Node = spawn(gEgg, Vector3(randX, 0, randZ));
 		gEggContainer.push_back(egg);
 	
-func spawn(prefab: PackedScene, pos: Vector3):
-	print("Spawn ", prefab.resource_path , " in Pos: ", pos);
-	var instance:Node = prefab.instantiate();
-	add_child(instance);
-	instance.position = pos;
-	
 func writeSaveFile(initial: bool):
 	print("Save: ", gSavePath);
 	var file = FileAccess.open(gSavePath, FileAccess.WRITE);
@@ -87,6 +93,7 @@ func writeSaveFile(initial: bool):
 			"Rooster": gRoosterContainer.size(), 
 			"Chick": gChickContainer.size(), 
 			"Egg": gEggContainer.size(), 
+			"CollectionEgg": gCollectionEggCount, 
 			"Coin": gCoin,
 		};
 		var saveDataString = JSON.stringify(saveData);
@@ -103,6 +110,21 @@ func writeSaveFile(initial: bool):
 		file.store_line(saveDataString);
 	
 	file.close();
+	
+func spawn(prefab: PackedScene, pos: Vector3):
+	print("Spawn ", prefab.resource_path , " in Pos: ", pos);
+	var instance:Node = prefab.instantiate();
+	add_child(instance);
+	instance.position = pos;
+	
+	var test:Animal = instance as Animal;
+	if test != null:
+		# TODO(Lee): 부모의 Status를 받아서 뽑아올 수 있도록 개선해야함
+		var rng:RandomNumberGenerator = RandomNumberGenerator.new();
+		var lifeTime:float = rng.randf_range(gMinLifeTime, gMaxLifeTime);
+		var speed:float = rng.randf_range(gMinSpeed, gMaxSpeed);
+		var productivity:float = rng.randf_range(gMinProductivity, gMaxProductivity);
+		test.initializeStatus(lifeTime, speed, productivity);
 	
 func _input(event):
 	if event.is_pressed() == false:
@@ -137,7 +159,7 @@ func findEgg(m_pos) -> Node:
 	return result["collider"]
 
 func acquireEgg(node):
-	gCoin += 1;
+	gCollectionEggCount += 1;
 	refreshCoinUI();
 	node.queue_free();
 
@@ -146,3 +168,23 @@ func refreshCoinUI():
 	var format_string:String = "$ %d";
 	var actual_string:String = format_string % gCoin;
 	get_node("Money/Label").text = actual_string;
+
+static func onAddAnimal(productivity:float) -> void:
+	gTotalProductivity += productivity;
+static func onRemoveAnimal(productivity:float) -> void:
+	gTotalProductivity -= productivity;
+	
+static var testEggSpawnTime:float = 15;
+static var gEggProductAccumulateTime:float = 0;
+func _process(delta: float) -> void:
+	#TODO(Lee): 나중에 경제벨런스 고려해서 잘 수식화 필요
+	gEggProductAccumulateTime += delta;
+	print("test: ", testEggSpawnTime, ", accum:", gEggProductAccumulateTime, ", total: ", gTotalProductivity);
+	if testEggSpawnTime - (gEggProductAccumulateTime + gTotalProductivity) < 0:
+		var rng:RandomNumberGenerator = RandomNumberGenerator.new();
+		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
+		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
+		var egg:Node = spawn(gEgg, Vector3(randX, 0, randZ));
+		gEggContainer.push_back(egg);
+		
+		gEggProductAccumulateTime = 0;

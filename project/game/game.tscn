@@ -38,26 +38,5 @@ mesh = SubResource("PlaneMesh_7vhny")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Dev"]
 transform = Transform3D(1, 0, 0, 0, 0.64679, 0.762668, 0, -0.762668, 0.64679, 0, 10, 0)
 
-[node name="Egg" parent="." instance=ExtResource("2_2nevv")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.775068, 0.0964454, 0.926712)
-
-[node name="Chick" parent="." instance=ExtResource("3_hsf4w")]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 2.15615, 0, 1.51708)
-
-[node name="Hen" parent="." instance=ExtResource("2_3lcty")]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -0.0744951, 0, 3.37602)
-
-[node name="Rooster" parent="." instance=ExtResource("2_m7af2")]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -3.11829, 0, 5.38937)
-
-[node name="Hen2" parent="." instance=ExtResource("2_3lcty")]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -1.3135, 0, 0.218681)
-
-[node name="Hen3" parent="." instance=ExtResource("2_3lcty")]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 2.92725, 0, 4.20461)
-
-[node name="Hen4" parent="." instance=ExtResource("2_3lcty")]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 2.46292, 0, -1.36869)
-
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="gui_input" from="Money" to="." method="_on_money_gui_input"]
