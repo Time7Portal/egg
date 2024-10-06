@@ -1,25 +1,26 @@
-[gd_scene load_steps=8 format=3 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=9 format=3 uid="uid://whmjiw60db4y"]
 
-[ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://Game/UI/money.tscn" id="1_ry0ax"]
-[ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_tryfc"]
-[ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://Game/Egg.tscn" id="2_2nevv"]
-[ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_3lcty"]
-[ext_resource type="PackedScene" uid="uid://dtl7w3hxoeve2" path="res://Game/Rooster.tscn" id="2_m7af2"]
-[ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://Game/Chick.tscn" id="3_hsf4w"]
+[ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
+[ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_05xf7"]
+[ext_resource type="PackedScene" uid="uid://dtl7w3hxoeve2" path="res://Game/Rooster.tscn" id="3_qdjkr"]
+[ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://Game/Chick.tscn" id="4_xx6mo"]
+[ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://Game/Egg.tscn" id="5_j5lv7"]
+[ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://Game/UI/money.tscn" id="6_skfyy"]
+[ext_resource type="ArrayMesh" uid="uid://cl1oeltbeukpd" path="res://Game/Model/Fence.res" id="7_1mfdf"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource("1_tryfc")
-gHen = ExtResource("2_3lcty")
-gRooster = ExtResource("2_m7af2")
-gChick = ExtResource("3_hsf4w")
-gEgg = ExtResource("2_2nevv")
+script = ExtResource("1_4ph6a")
+gHen = ExtResource("2_05xf7")
+gRooster = ExtResource("3_qdjkr")
+gChick = ExtResource("4_xx6mo")
+gEgg = ExtResource("5_j5lv7")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 60.0
 
-[node name="Money" parent="." instance=ExtResource("1_ry0ax")]
+[node name="Money" parent="." instance=ExtResource("6_skfyy")]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_bottom = 0.0
@@ -27,16 +28,41 @@ grow_horizontal = 0
 grow_vertical = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.44843, 0.893818, 0, -0.893818, 0.44843, 0, 16.286, 8.984)
+transform = Transform3D(1, 0, 0, 0, 0.624302, 0.781183, 0, -0.781183, 0.624302, 0, 25, 18)
+
+[node name="Fence" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 1.06538, 0)
+mesh = ExtResource("7_1mfdf")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7vhny")
 
 [node name="Dev" type="Node" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Dev"]
 transform = Transform3D(1, 0, 0, 0, 0.64679, 0.762668, 0, -0.762668, 0.64679, 0, 10, 0)
+
+[node name="Egg" parent="." instance=ExtResource("5_j5lv7")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.775068, 0.0964454, 0.926712)
+
+[node name="Chick" parent="." instance=ExtResource("4_xx6mo")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 2.15615, 0, 1.51708)
+
+[node name="Hen" parent="." instance=ExtResource("2_05xf7")]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -0.0744951, 0, 3.37602)
+
+[node name="Rooster" parent="." instance=ExtResource("3_qdjkr")]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -3.11829, 0, 5.38937)
+
+[node name="Hen2" parent="." instance=ExtResource("2_05xf7")]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -1.3135, 0, 0.218681)
+
+[node name="Hen3" parent="." instance=ExtResource("2_05xf7")]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 2.92725, 0, 4.20461)
+
+[node name="Hen4" parent="." instance=ExtResource("2_05xf7")]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 2.46292, 0, -1.36869)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="gui_input" from="Money" to="." method="_on_money_gui_input"]

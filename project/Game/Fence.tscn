@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b70nnxtsxstaq"]
+
+[ext_resource type="ArrayMesh" uid="uid://cl1oeltbeukpd" path="res://Game/Model/Fence.res" id="1_mgiw0"]
+
+[node name="Fence" type="MeshInstance3D"]
+mesh = ExtResource("1_mgiw0")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
