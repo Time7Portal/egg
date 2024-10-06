@@ -1,33 +1,18 @@
 extends Node3D
 class_name Manager
 
-static var gGroundWitdh: float = 3;
-static var gGroundHeight: float = 5;
-
 @onready var gTimer = $Timer;
-
-@export var gMaxLifeTime:float = 3600 * 24 * 50;	# second
-@export var gMinLifeTime:float = 3600 * 24 * 7;	# second
-@export var gMaxProductivity:float = 1;
-@export var gMinProductivity:float = 0;
-@export var gMaxSpeed:float = 2.6;
-@export var gMinSpeed:float = 2.3;
-
-@export var gHen: PackedScene;
-@export var gRooster: PackedScene;
-@export var gChick: PackedScene;
-@export var gEgg: PackedScene;
-
-static var gSavePath: String =  "user://saveFile.save";
 
 static var gHenContainer: Array[Node];
 static var gRoosterContainer: Array[Node];
 static var gChickContainer: Array[Node];
 static var gEggContainer: Array[Node];
-static var gCollectionEggCount: int = 0;
 
+# Status
 static var gTotalProductivity: float = 0;
 
+# Property
+static var gCollectionEggCount: int = 0;
 static var gCoin: int = 0;
 
 func _ready():
@@ -40,17 +25,16 @@ func _on_timer_timeout() -> void:
 	gTimer.start();
 	
 func readSaveFile():
-	if not FileAccess.file_exists(gSavePath):
-		return;
-		
-	var file = FileAccess.open(gSavePath, FileAccess.READ);
-	if file == null:
+	if not FileAccess.file_exists(GlobalVariable.gSavePath):
 		writeSaveFile(true);
 		
-	var json = JSON.new();
-	var parse_result = json.parse(file.get_line());
+	var file:FileAccess = FileAccess.open(GlobalVariable.gSavePath, FileAccess.READ);
+	Logger.LogError("No Save File!");
+		
+	var json:JSON = JSON.new();
+	var parse_result:Error = json.parse(file.get_line());
 	if not parse_result == OK:
-		print("JSON Parsing Error: ", json.get_error_message(), " in ", json.get_line(), "at line ", json.get_error_line());
+		Logger.LogError("JSON Parsing Error: %s in line %d" % [json.get_error_message(), json.get_error_line()]);
 		return;
 	
 	var node_data = json.get_data();
@@ -58,34 +42,23 @@ func readSaveFile():
 	
 	gCollectionEggCount = node_data["CollectionEgg"];
 	gCoin = node_data["Coin"];
-	
-	var rng = RandomNumberGenerator.new();
-	rng.randomize();
 		
 	for i in node_data["Hen"]:
-		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
-		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
-		var hen:Node = spawn(gHen, Vector3(randX, 0, randZ));
+		var hen:Node = spawn(GlobalVariable.gHen, GlobalVariable.getRandomGroundPosition());
 		gHenContainer.push_back(hen);
 	for i in node_data["Rooster"]:
-		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
-		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
-		var rooster:Node = spawn(gRooster, Vector3(randX, 0, randZ));
+		var rooster:Node = spawn(GlobalVariable.gRooster, GlobalVariable.getRandomGroundPosition());
 		gRoosterContainer.push_back(rooster);
 	for i in node_data["Chick"]:
-		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
-		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
-		var chick:Node = spawn(gChick, Vector3(randX, 0, randZ));
+		var chick:Node = spawn(GlobalVariable.gChick, GlobalVariable.getRandomGroundPosition());
 		gChickContainer.push_back(chick);
 	for i in node_data["Egg"]:
-		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
-		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
-		var egg:Node = spawn(gEgg, Vector3(randX, 0, randZ));
+		var egg:Node = spawn(GlobalVariable.gEgg, GlobalVariable.getRandomGroundPosition());
 		gEggContainer.push_back(egg);
 	
 func writeSaveFile(initial: bool):
-	print("Save: ", gSavePath);
-	var file = FileAccess.open(gSavePath, FileAccess.WRITE);
+	Logger.LogDebug("Save: %s" % GlobalVariable.gSavePath);
+	var file = FileAccess.open(GlobalVariable.gSavePath, FileAccess.WRITE);
 	
 	if initial == false:
 		var saveData = {
@@ -104,6 +77,7 @@ func writeSaveFile(initial: bool):
 			"Rooster": 1, 
 			"Chick": 0, 
 			"Egg": 0, 
+			"CollectionEgg": gCollectionEggCount, 
 			"Coin": gCoin,
 		};
 		var saveDataString:String = JSON.stringify(saveData);
@@ -112,7 +86,7 @@ func writeSaveFile(initial: bool):
 	file.close();
 	
 func spawn(prefab: PackedScene, pos: Vector3):
-	print("Spawn ", prefab.resource_path , " in Pos: ", pos);
+	Logger.LogDebug("Spawn %s in Pos: %v" % [prefab.resource_path, pos]);
 	var instance:Node = prefab.instantiate();
 	add_child(instance);
 	instance.position = pos;
@@ -122,9 +96,9 @@ func spawn(prefab: PackedScene, pos: Vector3):
 	if animal != null:
 		# TODO(Lee): 부모의 Status를 받아서 뽑아올 수 있도록 개선해야함
 		var rng:RandomNumberGenerator = RandomNumberGenerator.new();
-		var lifeTime:float = rng.randf_range(gMinLifeTime, gMaxLifeTime);
-		var speed:float = rng.randf_range(gMinSpeed, gMaxSpeed);
-		var productivity:float = rng.randf_range(gMinProductivity, gMaxProductivity);
+		var lifeTime:float = rng.randf_range(GlobalVariable.gMinLifeTime, GlobalVariable.gMaxLifeTime);
+		var speed:float = rng.randf_range(GlobalVariable.gMinSpeed, GlobalVariable.gMaxSpeed);
+		var productivity:float = rng.randf_range(GlobalVariable.gMinProductivity, GlobalVariable.gMaxProductivity);
 		animal.initializeStatus(lifeTime, speed, productivity);
 	
 func _input(event):
@@ -142,32 +116,32 @@ func _input(event):
 	acquireEgg(result.get_parent());
 
 func findEgg(m_pos) -> Node:
-	var cam = get_viewport().get_camera_3d()
-	var ray_start = cam.project_ray_origin(m_pos)
-	var ray_end = ray_start + cam.project_ray_normal(m_pos) * 2000
-	var world3d : World3D = get_world_3d()
-	var space_state = world3d.direct_space_state
+	var cam:Camera3D = get_viewport().get_camera_3d();
+	var ray_start:Vector3 = cam.project_ray_origin(m_pos);
+	var ray_end:Vector3 = ray_start + cam.project_ray_normal(m_pos) * 2000;
+	var world3d:World3D = get_world_3d();
+	var space_state:PhysicsDirectSpaceState3D = world3d.direct_space_state;
 	
 	if space_state == null:
 		return null;
 	
-	var query = PhysicsRayQueryParameters3D.create(ray_start, ray_end)
+	var query:PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(ray_start, ray_end)
 	query.collide_with_areas = true
-	var result = space_state.intersect_ray(query)
+	var result:Dictionary = space_state.intersect_ray(query)
 	if !("collider" in result):
 		return null;
 	
 	return result["collider"]
 
-func acquireEgg(node:Node):
+func acquireEgg(node:Node) -> void:
 	gCollectionEggCount += 1;
 	refreshCoinUI();
 	
-	assert(gEggContainer.find(node) < 0, "Spawn되지 않은 Egg의 습득을 시도합니다.");
+	Logger.LogAssert(gEggContainer.find(node) < 0, "Spawn되지 않은 Egg의 습득을 시도합니다.");
 	gEggContainer.erase(node);
 	node.queue_free();
 
-func refreshCoinUI():
+func refreshCoinUI() -> void:
 	#https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_format_string.html
 	var format_string:String = "$ %d";
 	var actual_string:String = format_string % gCoin;
@@ -184,38 +158,30 @@ func _process(delta: float) -> void:
 	#TODO(Lee): 나중에 경제벨런스 고려해서 잘 수식화 필요
 	gEggProductAccumulateTime += delta;
 	if testEggSpawnTime - (gEggProductAccumulateTime + gTotalProductivity) < 0:
-		var rng:RandomNumberGenerator = RandomNumberGenerator.new();
-		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
-		var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
-		var egg:Node = spawn(gEgg, Vector3(randX, 0, randZ));
+		var egg:Node = spawn(GlobalVariable.gEgg, GlobalVariable.getRandomGroundPosition());
 		gEggContainer.push_back(egg);
 		
 		gEggProductAccumulateTime = 0;
 		
 func onHatching(egg: Node) -> void:
-	assert(gEggContainer.find(egg) < 0, "Spawn되지 않았던 Egg의 부화시도.");
+	Logger.LogAssert(gEggContainer.find(egg) < 0, "Spawn되지 않았던 Egg의 부화시도.");
 	gEggContainer.erase(egg);
 	egg.queue_free();
 	
-	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
-	var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
-	var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
-	var chick:Node = spawn(gChick, Vector3(randX, 0, randZ));
+	var chick:Node = spawn(GlobalVariable.gChick, GlobalVariable.getRandomGroundPosition());
 	gChickContainer.push_back(chick);
 	
 func onEvolutionChick(chick: Node) -> void:
-	assert(gChickContainer.find(chick) < 0, "Spawn되지 않았던 Chick의 성장시도.");
+	Logger.LogAssert(gChickContainer.find(chick) < 0, "Spawn되지 않았던 Chick의 성장시도.");
 	gChickContainer.erase(chick);
 	chick.queue_free();
 	
 	#TODO(Lee): Chick 상태에서부터 암/수 구분할지는 논의 필요
 	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 	var isHen:bool = rng.randf() < 0.5;
-	var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
-	var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
 	if isHen:
-		var hen:Node = spawn(gHen, Vector3(randX, 0, randZ));
+		var hen:Node = spawn(GlobalVariable.gHen, GlobalVariable.getRandomGroundPosition());
 		gHenContainer.push_back(hen);
 	else:
-		var rooster:Node = spawn(gRooster, Vector3(randX, 0, randZ));
+		var rooster:Node = spawn(GlobalVariable.gRooster, GlobalVariable.getRandomGroundPosition());
 		gRoosterContainer.push_back(rooster);

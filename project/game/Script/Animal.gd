@@ -61,7 +61,7 @@ func changeStateIDLE() -> void:
 	gIdleTime = rng.randf_range(gMinIdleTime, gMaxIdleTime);
 	gCurrentIdleTime = 0;
 	gState = STATE.IDLE;
-	print("Idle: ", self.name, " time: ", gIdleTime);
+	Logger.LogDebug("Idle: %s time: %f" % [self.name, gIdleTime]);
 
 func _ready() -> void:
 	changeStateIDLE();
@@ -83,8 +83,8 @@ func _process(delta: float) -> void:
 			if gCurrentIdleTime >= gIdleTime:
 				var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 				rng.randomize();
-				gTargetPosition = Vector3(rng.randf_range(-Manager.gGroundWitdh, Manager.gGroundWitdh), 0, rng.randf_range(-Manager.gGroundHeight, Manager.gGroundHeight));
-				print("Move: ", self.name, " to ", gTargetPosition);
+				gTargetPosition = GlobalVariable.getRandomGroundPosition();
+				Logger.LogDebug("Move: %s to %v" % [self.name, gTargetPosition]);
 				draw_debug_sphere(gTargetPosition, 0.2);
 				
 				var dir:Vector3 = gTargetPosition - self.position;
@@ -120,4 +120,4 @@ func _process(delta: float) -> void:
 			# 지구인 : 부드러운 회전 구현
 			self.rotation.y -= (self.rotation.y - gTargetRotationY) * delta * 2.0;
 		_:
-			print("Error!");
+			Logger.LogError("Error!");

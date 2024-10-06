@@ -15,6 +15,11 @@ run/main_scene="res://Game/Game.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GlobalVariableNode="*res://Game/Script/GlobalVariable.gd"
+LoggerNode="*res://Game/Script/Logger.gd"
+
 [display]
 
 window/size/viewport_width=720
