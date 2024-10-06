@@ -22,7 +22,7 @@ var gJumpOmega = 0.0;
 var gTargetRotationY = 0.0;
 
 
-#def
+#dev
 var debugTargetPositionSphere: Node = null;
 
 # Add a debug sphere at global location.
@@ -44,10 +44,10 @@ func draw_debug_sphere(location, size):
 	# Add to meshinstance in the right place.
 	debugTargetPositionSphere = MeshInstance3D.new()
 	debugTargetPositionSphere.mesh = sphere
-	debugTargetPositionSphere.global_transform.origin = location
 	scene_root.add_child(debugTargetPositionSphere)
+	debugTargetPositionSphere.global_transform.origin = location
 	
-#def
+#dev
 
 func changeStateIDLE() -> void:	
 	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
