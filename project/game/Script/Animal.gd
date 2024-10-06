@@ -26,7 +26,6 @@ class Status:
 	var _speed:float = 0; # UnitLength per second
 	var _jumpHeight:float = 0.3; # MaxHeight, 현재는 고정으로 사용
 	var _productivity:float = 0;
-	var _aggression:float = 0;
 	
 var _status:Status;
 #endregion
@@ -68,7 +67,6 @@ func _ready() -> void:
 	changeStateIDLE();
 	
 func initializeStatus(lifeTime:float, speed:float, productivity:float) -> void:
-	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 	_status = Status.new();
 	_status._lifeTime = lifeTime;
 	_status._speed = speed;

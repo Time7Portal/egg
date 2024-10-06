@@ -20,10 +20,10 @@ static var gGroundHeight: float = 5;
 
 static var gSavePath: String =  "user://saveFile.save";
 
-static var gHenContainer: Array[PackedScene];
-static var gRoosterContainer: Array[PackedScene];
-static var gChickContainer: Array[PackedScene];
-static var gEggContainer: Array[PackedScene];
+static var gHenContainer: Array[Node];
+static var gRoosterContainer: Array[Node];
+static var gChickContainer: Array[Node];
+static var gEggContainer: Array[Node];
 static var gCollectionEggCount: int = 0;
 
 static var gTotalProductivity: float = 0;
@@ -117,14 +117,15 @@ func spawn(prefab: PackedScene, pos: Vector3):
 	add_child(instance);
 	instance.position = pos;
 	
-	var test:Animal = instance as Animal;
-	if test != null:
+	# 이 곳에 있을 로직은 아닌듯..
+	var animal:Animal = instance as Animal;
+	if animal != null:
 		# TODO(Lee): 부모의 Status를 받아서 뽑아올 수 있도록 개선해야함
 		var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 		var lifeTime:float = rng.randf_range(gMinLifeTime, gMaxLifeTime);
 		var speed:float = rng.randf_range(gMinSpeed, gMaxSpeed);
 		var productivity:float = rng.randf_range(gMinProductivity, gMaxProductivity);
-		test.initializeStatus(lifeTime, speed, productivity);
+		animal.initializeStatus(lifeTime, speed, productivity);
 	
 func _input(event):
 	if event.is_pressed() == false:
@@ -158,9 +159,12 @@ func findEgg(m_pos) -> Node:
 	
 	return result["collider"]
 
-func acquireEgg(node):
+func acquireEgg(node:Node):
 	gCollectionEggCount += 1;
 	refreshCoinUI();
+	
+	assert(gEggContainer.find(node) < 0, "Spawn되지 않은 Egg의 습득을 시도합니다.");
+	gEggContainer.erase(node);
 	node.queue_free();
 
 func refreshCoinUI():
@@ -179,7 +183,6 @@ static var gEggProductAccumulateTime:float = 0;
 func _process(delta: float) -> void:
 	#TODO(Lee): 나중에 경제벨런스 고려해서 잘 수식화 필요
 	gEggProductAccumulateTime += delta;
-	print("test: ", testEggSpawnTime, ", accum:", gEggProductAccumulateTime, ", total: ", gTotalProductivity);
 	if testEggSpawnTime - (gEggProductAccumulateTime + gTotalProductivity) < 0:
 		var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 		var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
@@ -188,3 +191,31 @@ func _process(delta: float) -> void:
 		gEggContainer.push_back(egg);
 		
 		gEggProductAccumulateTime = 0;
+		
+func onHatching(egg: Node) -> void:
+	assert(gEggContainer.find(egg) < 0, "Spawn되지 않았던 Egg의 부화시도.");
+	gEggContainer.erase(egg);
+	egg.queue_free();
+	
+	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
+	var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
+	var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
+	var chick:Node = spawn(gChick, Vector3(randX, 0, randZ));
+	gChickContainer.push_back(chick);
+	
+func onEvolutionChick(chick: Node) -> void:
+	assert(gChickContainer.find(chick) < 0, "Spawn되지 않았던 Chick의 성장시도.");
+	gChickContainer.erase(chick);
+	chick.queue_free();
+	
+	#TODO(Lee): Chick 상태에서부터 암/수 구분할지는 논의 필요
+	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
+	var isHen:bool = rng.randf() < 0.5;
+	var randX:float = rng.randf_range(-gGroundWitdh, gGroundWitdh);
+	var randZ:float = rng.randf_range(-gGroundHeight, gGroundWitdh);
+	if isHen:
+		var hen:Node = spawn(gHen, Vector3(randX, 0, randZ));
+		gHenContainer.push_back(hen);
+	else:
+		var rooster:Node = spawn(gRooster, Vector3(randX, 0, randZ));
+		gRoosterContainer.push_back(rooster);
