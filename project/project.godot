@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GlobalVariableNode="*res://Game/Script/GlobalVariable.gd"
 LoggerNode="*res://Game/Script/Logger.gd"
+UtilityNode="*res://Game/Script/Utility.gd"
 
 [display]
 

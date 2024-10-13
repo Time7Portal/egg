@@ -28,6 +28,7 @@ class Status:
 	var _productivity:float = 0;
 	
 var _status:Status;
+var _currentLifeTime:float = 0;
 #endregion
 
 #region Develop
@@ -61,7 +62,7 @@ func changeStateIDLE() -> void:
 	gIdleTime = rng.randf_range(gMinIdleTime, gMaxIdleTime);
 	gCurrentIdleTime = 0;
 	gState = STATE.IDLE;
-	Logger.LogDebug("Idle: %s time: %f" % [self.name, gIdleTime]);
+	#Logger.LogDebug("Idle: %s time: %f" % [self.name, gIdleTime]);
 
 func _ready() -> void:
 	changeStateIDLE();
@@ -75,8 +76,16 @@ func initializeStatus(lifeTime:float, speed:float, productivity:float) -> void:
 	
 func _exit_tree() -> void:
 	Manager.onRemoveAnimal(_status._productivity);
+	
+func processLifeTime() -> void:
+	if _currentLifeTime >= _status._lifeTime:
+		self.queue_free();
 
 func _process(delta: float) -> void:
+	_currentLifeTime += delta;
+	
+	processLifeTime();
+	
 	match gState:
 		STATE.IDLE:
 			gCurrentIdleTime += delta;
@@ -84,7 +93,7 @@ func _process(delta: float) -> void:
 				var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 				rng.randomize();
 				gTargetPosition = GlobalVariable.getRandomGroundPosition();
-				Logger.LogDebug("Move: %s to %v" % [self.name, gTargetPosition]);
+				#Logger.LogDebug("Move: %s to %v" % [self.name, gTargetPosition]);
 				draw_debug_sphere(gTargetPosition, 0.2);
 				
 				var dir:Vector3 = gTargetPosition - self.position;
