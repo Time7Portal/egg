@@ -70,13 +70,18 @@ transform = Transform3D(0.636958, 0, 0, 0, 2.02121, 0, 0, 0, 0.636958, -8.92659,
 mesh = ExtResource("11_om77w")
 skeleton = NodePath("../..")
 
+[node name="Tree07" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.868113, 0, 0, 0, 2.75472, 0, 0, 0, 0.868113, -16.224, -3.8147e-06, -41.9931)
+mesh = ExtResource("11_om77w")
+skeleton = NodePath("../..")
+
 [node name="Tree06" type="MeshInstance3D" parent="Environment"]
-transform = Transform3D(-0.91733, -0.00373772, -0.398122, -0.00125496, 1.94649, -0.00193161, 0.398125, -0.00247654, -0.91733, -12.1486, 1.70441, -31.2182)
+transform = Transform3D(-0.91733, -0.00373772, -0.398122, -0.00125496, 1.94649, -0.00193161, 0.398125, -0.00247654, -0.91733, -10.5253, 1.70441, -31.2182)
 mesh = ExtResource("9_uee62")
 skeleton = NodePath("../..")
 
 [node name="Tree05" type="MeshInstance3D" parent="Environment"]
-transform = Transform3D(0.438678, 0, -0.494164, 0, 0.660784, 0, 0.494164, 0, 0.438678, 23.1366, -7.62939e-06, -56.1191)
+transform = Transform3D(0.438678, 0, -0.494164, 0, 0.660784, 0, 0.494164, 0, 0.438678, 20.613, -7.62939e-06, -56.1191)
 mesh = ExtResource("12_521cc")
 skeleton = NodePath("../..")
 
@@ -89,7 +94,7 @@ skeleton = NodePath("../..")
 wait_time = 60.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.714595, 0.699539, 0, -0.699539, 0.714595, 0, 23.2808, 24.6912)
+transform = Transform3D(1, 0, 0, 0, 0.714595, 0.699539, 0, -0.699539, 0.714595, 0, 24.2471, 19.9244)
 
 [node name="Mailbox" type="MeshInstance3D" parent="."]
 transform = Transform3D(2.98505, 0, -2.22402, 0, 3.72247, 0, 2.22402, 0, 2.98505, 7.29963, 0, -14.3141)
