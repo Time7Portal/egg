@@ -90,8 +90,6 @@ func _process(delta: float) -> void:
 		STATE.IDLE:
 			gCurrentIdleTime += delta;
 			if gCurrentIdleTime >= gIdleTime:
-				var rng:RandomNumberGenerator = RandomNumberGenerator.new();
-				rng.randomize();
 				gTargetPosition = GlobalVariable.getRandomGroundPosition();
 				#Logger.LogDebug("Move: %s to %v" % [self.name, gTargetPosition]);
 				draw_debug_sphere(gTargetPosition, 0.2);
@@ -115,7 +113,6 @@ func _process(delta: float) -> void:
 			var dist:Vector3 = gTargetPosition - (self.position + moveDelta);
 			if dist.length() <= 0.05:
 				moveDelta = gTargetPosition - self.position;
-				#gState = STATE.IDLE;
 				changeStateIDLE();
 				debugTargetPositionSphere.queue_free();
 				
