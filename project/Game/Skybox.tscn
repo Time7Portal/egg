@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://ny5tgg2t88o0"]
+
+[ext_resource type="Texture2D" uid="uid://bswq4w0pd7y2r" path="res://Game/Texture/7wlb_t4kh_151225.jpg" id="1_6m17a"]
+[ext_resource type="Script" path="res://Game/Script/skybox.gd" id="2_bifia"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_2e4he"]
+panorama = ExtResource("1_6m17a")
+
+[sub_resource type="Sky" id="Sky_3chf4"]
+sky_material = SubResource("PanoramaSkyMaterial_2e4he")
+
+[sub_resource type="Environment" id="Environment_adhpe"]
+background_mode = 2
+sky = SubResource("Sky_3chf4")
+sky_custom_fov = 80.0
+sky_rotation = Vector3(0.0872665, 0, 0)
+ambient_light_source = 3
+ambient_light_color = Color(0.717647, 0.87451, 0.988235, 1)
+ambient_light_energy = 0.1
+fog_light_color = Color(0.35774, 0.627789, 0.677297, 1)
+fog_density = 0.0205
+fog_sky_affect = 0.0
+
+[node name="Skybox" type="WorldEnvironment"]
+environment = SubResource("Environment_adhpe")
+script = ExtResource("2_bifia")

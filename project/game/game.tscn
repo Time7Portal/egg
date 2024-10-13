@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=11 format=3 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
 [ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_vnxby"]
@@ -6,9 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://Game/Chick.tscn" id="4_mk8jr"]
 [ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://Game/Egg.tscn" id="5_qtnkr"]
 [ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://Game/UI/money.tscn" id="6_skfyy"]
-[ext_resource type="ArrayMesh" path="res://Game/Model/Fence.res" id="7_1mfdf"]
+[ext_resource type="PackedScene" uid="uid://ny5tgg2t88o0" path="res://Game/Skybox.tscn" id="6_uggsq"]
+[ext_resource type="ArrayMesh" uid="uid://cl1oeltbeukpd" path="res://Game/Model/Fence.res" id="7_1mfdf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgeu1"]
+albedo_color = Color(0.382691, 0.633828, 0.394315, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
+material = SubResource("StandardMaterial3D_fgeu1")
+size = Vector2(10, 10)
 
 [node name="Manager" type="Node3D"]
 script = ExtResource("1_4ph6a")
@@ -16,6 +22,8 @@ gHen = ExtResource("2_vnxby")
 gRooster = ExtResource("3_lhbqb")
 gChick = ExtResource("4_mk8jr")
 gEgg = ExtResource("5_qtnkr")
+
+[node name="Skybox" parent="." instance=ExtResource("6_uggsq")]
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 60.0
@@ -28,7 +36,7 @@ grow_horizontal = 0
 grow_vertical = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.624302, 0.781183, 0, -0.781183, 0.624302, 0, 25, 18)
+transform = Transform3D(1, 0, 0, 0, 0.886308, 0.463095, 0, -0.463095, 0.886308, 0, 16.5609, 27.8293)
 
 [node name="Fence" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 1.06538, 0)
