@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=17 format=3 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
 [ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_vnxby"]
@@ -8,13 +8,19 @@
 [ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://Game/UI/money.tscn" id="6_skfyy"]
 [ext_resource type="PackedScene" uid="uid://ny5tgg2t88o0" path="res://Game/Skybox.tscn" id="6_uggsq"]
 [ext_resource type="ArrayMesh" uid="uid://cl1oeltbeukpd" path="res://Game/Model/Fence.res" id="7_1mfdf"]
+[ext_resource type="ArrayMesh" uid="uid://4qpile3dkw75" path="res://Game/Model/Tree_01.res" id="9_uee62"]
+[ext_resource type="ArrayMesh" uid="uid://dimugyrgsqn5p" path="res://Game/Model/Tree_02.res" id="10_46k02"]
+[ext_resource type="ArrayMesh" uid="uid://kge4s8rxataq" path="res://Game/Model/Tree_03.res" id="11_om77w"]
+[ext_resource type="ArrayMesh" uid="uid://blrji0uobmfis" path="res://Game/Model/Tree_05.res" id="12_521cc"]
+[ext_resource type="ArrayMesh" uid="uid://02783d4i8wdf" path="res://Game/Model/Tree_04.res" id="13_v13q8"]
+[ext_resource type="ArrayMesh" uid="uid://bh5gxatgrryhn" path="res://Game/Model/Mailbox.res" id="14_v8p4d"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgeu1"]
 albedo_color = Color(0.382691, 0.633828, 0.394315, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7vhny"]
 material = SubResource("StandardMaterial3D_fgeu1")
-size = Vector2(10, 10)
+size = Vector2(10, 3)
 
 [node name="Manager" type="Node3D"]
 script = ExtResource("1_4ph6a")
@@ -23,33 +29,71 @@ gRooster = ExtResource("3_lhbqb")
 gChick = ExtResource("4_mk8jr")
 gEgg = ExtResource("5_qtnkr")
 
-[node name="Skybox" parent="." instance=ExtResource("6_uggsq")]
+[node name="UI" type="Node" parent="."]
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 60.0
-
-[node name="Money" parent="." instance=ExtResource("6_skfyy")]
+[node name="Money" parent="UI" instance=ExtResource("6_skfyy")]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 1
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.886308, 0.463095, 0, -0.463095, 0.886308, 0, 16.5609, 27.8293)
+[node name="Environment" type="Node" parent="."]
 
-[node name="Fence" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 1.06538, 0)
-mesh = ExtResource("7_1mfdf")
-
-[node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
-mesh = SubResource("PlaneMesh_7vhny")
-
-[node name="Dev" type="Node" parent="."]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Dev"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 0.64679, 0.762668, 0, -0.762668, 0.64679, 0, 10, 0)
 
+[node name="Skybox" parent="Environment" instance=ExtResource("6_uggsq")]
+
+[node name="Ground" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+mesh = SubResource("PlaneMesh_7vhny")
+skeleton = NodePath("../..")
+
+[node name="Fence" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 1.06538, 0)
+mesh = ExtResource("7_1mfdf")
+skeleton = NodePath("../..")
+
+[node name="Tree01" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(1.19153, 0, 0, 0, 2.3193, 0, 0, 0, 1.19153, -13.6774, 2.09206, -17.5126)
+mesh = ExtResource("9_uee62")
+skeleton = NodePath("../..")
+
+[node name="Tree02" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.957158, 0, -0.289566, 0, 1, 0, 0.289566, 0, 0.957158, 9.73825, 0.0270596, -15.3982)
+mesh = ExtResource("10_46k02")
+skeleton = NodePath("../..")
+
+[node name="Tree03" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.636958, 0, 0, 0, 2.02121, 0, 0, 0, 0.636958, -8.92659, -3.8147e-06, -46.9705)
+mesh = ExtResource("11_om77w")
+skeleton = NodePath("../..")
+
+[node name="Tree06" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(-0.91733, -0.00373772, -0.398122, -0.00125496, 1.94649, -0.00193161, 0.398125, -0.00247654, -0.91733, -12.1486, 1.70441, -31.2182)
+mesh = ExtResource("9_uee62")
+skeleton = NodePath("../..")
+
+[node name="Tree05" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.438678, 0, -0.494164, 0, 0.660784, 0, 0.494164, 0, 0.438678, 23.1366, -7.62939e-06, -56.1191)
+mesh = ExtResource("12_521cc")
+skeleton = NodePath("../..")
+
+[node name="Tree04" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.395014, 0, -0.270209, 0, 0.478591, 0, 0.270209, 0, 0.395014, -22.4498, 0.286648, -57.5177)
+mesh = ExtResource("13_v13q8")
+skeleton = NodePath("../..")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 60.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.714595, 0.699539, 0, -0.699539, 0.714595, 0, 23.2808, 24.6912)
+
+[node name="Mailbox" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.98505, 0, -2.22402, 0, 3.72247, 0, 2.22402, 0, 2.98505, 7.29963, 0, -14.3141)
+mesh = ExtResource("14_v8p4d")
+
+[connection signal="gui_input" from="UI/Money" to="." method="_on_money_gui_input"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="gui_input" from="Money" to="." method="_on_money_gui_input"]

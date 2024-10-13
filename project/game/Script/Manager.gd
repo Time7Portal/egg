@@ -2,7 +2,7 @@ extends Node3D
 class_name Manager
 
 @onready var gTimer: Timer = $Timer;
-@onready var gUIPanel: Node = $Money/Label;
+@onready var gUIPanel: Node = $UI/Money/Label;
 
 @export var gHen: PackedScene;
 @export var gRooster: PackedScene;
