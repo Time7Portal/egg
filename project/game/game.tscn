@@ -1,6 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=9 format=3 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
+[ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_vnxby"]
+[ext_resource type="PackedScene" uid="uid://dtl7w3hxoeve2" path="res://Game/Rooster.tscn" id="3_lhbqb"]
+[ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://Game/Chick.tscn" id="4_mk8jr"]
+[ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://Game/Egg.tscn" id="5_qtnkr"]
 [ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://Game/UI/money.tscn" id="6_skfyy"]
 [ext_resource type="ArrayMesh" path="res://Game/Model/Fence.res" id="7_1mfdf"]
 
@@ -8,6 +12,10 @@
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_4ph6a")
+gHen = ExtResource("2_vnxby")
+gRooster = ExtResource("3_lhbqb")
+gChick = ExtResource("4_mk8jr")
+gEgg = ExtResource("5_qtnkr")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 60.0

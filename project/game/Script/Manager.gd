@@ -3,12 +3,17 @@ class_name Manager
 
 @onready var gTimer = $Timer;
 
+@export var gHen: PackedScene;
+@export var gRooster: PackedScene;
+@export var gChick: PackedScene;
+@export var gEgg: PackedScene;
+
 static var gHenContainer: Array[Node];
 static var gRoosterContainer: Array[Node];
 static var gChickContainer: Array[Node];
 static var gEggContainer: Array[Node];
 
-# Status
+# Total Status
 static var gTotalProductivity: float = 0;
 
 # Property
@@ -44,16 +49,16 @@ func readSaveFile():
 	gCoin = node_data["Coin"];
 		
 	for i in node_data["Hen"]:
-		var hen:Node = spawn(GlobalVariable.gHen, GlobalVariable.getRandomGroundPosition());
+		var hen:Node = spawn(gHen, GlobalVariable.getRandomGroundPosition());
 		gHenContainer.push_back(hen);
 	for i in node_data["Rooster"]:
-		var rooster:Node = spawn(GlobalVariable.gRooster, GlobalVariable.getRandomGroundPosition());
+		var rooster:Node = spawn(gRooster, GlobalVariable.getRandomGroundPosition());
 		gRoosterContainer.push_back(rooster);
 	for i in node_data["Chick"]:
-		var chick:Node = spawn(GlobalVariable.gChick, GlobalVariable.getRandomGroundPosition());
+		var chick:Node = spawn(gChick, GlobalVariable.getRandomGroundPosition());
 		gChickContainer.push_back(chick);
 	for i in node_data["Egg"]:
-		var egg:Node = spawn(GlobalVariable.gEgg, GlobalVariable.getRandomGroundPosition());
+		var egg:Node = spawn(gEgg, GlobalVariable.getRandomGroundPosition());
 		gEggContainer.push_back(egg);
 	
 func writeSaveFile(initial: bool):
@@ -158,20 +163,20 @@ func _process(delta: float) -> void:
 	#TODO(Lee): 나중에 경제벨런스 고려해서 잘 수식화 필요
 	gEggProductAccumulateTime += delta;
 	if testEggSpawnTime - (gEggProductAccumulateTime + gTotalProductivity) < 0:
-		var egg:Node = spawn(GlobalVariable.gEgg, GlobalVariable.getRandomGroundPosition());
+		var egg:Node = spawn(gEgg, GlobalVariable.getRandomGroundPosition());
 		gEggContainer.push_back(egg);
 		
 		gEggProductAccumulateTime = 0;
 		
-func onHatching(egg: Node) -> void:
+func onEggHatching(egg: Node) -> void:
 	Logger.LogAssert(gEggContainer.find(egg) < 0, "Spawn되지 않았던 Egg의 부화시도.");
 	gEggContainer.erase(egg);
 	egg.queue_free();
 	
-	var chick:Node = spawn(GlobalVariable.gChick, GlobalVariable.getRandomGroundPosition());
+	var chick:Node = spawn(gChick, GlobalVariable.getRandomGroundPosition());
 	gChickContainer.push_back(chick);
 	
-func onEvolutionChick(chick: Node) -> void:
+func onChickEvolution(chick: Node) -> void:
 	Logger.LogAssert(gChickContainer.find(chick) < 0, "Spawn되지 않았던 Chick의 성장시도.");
 	gChickContainer.erase(chick);
 	chick.queue_free();
@@ -180,8 +185,8 @@ func onEvolutionChick(chick: Node) -> void:
 	var rng:RandomNumberGenerator = RandomNumberGenerator.new();
 	var isHen:bool = rng.randf() < 0.5;
 	if isHen:
-		var hen:Node = spawn(GlobalVariable.gHen, GlobalVariable.getRandomGroundPosition());
+		var hen:Node = spawn(gHen, GlobalVariable.getRandomGroundPosition());
 		gHenContainer.push_back(hen);
 	else:
-		var rooster:Node = spawn(GlobalVariable.gRooster, GlobalVariable.getRandomGroundPosition());
+		var rooster:Node = spawn(gRooster, GlobalVariable.getRandomGroundPosition());
 		gRoosterContainer.push_back(rooster);
