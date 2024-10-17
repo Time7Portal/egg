@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=19 format=3 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
 [ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_vnxby"]
@@ -14,6 +14,8 @@
 [ext_resource type="ArrayMesh" uid="uid://blrji0uobmfis" path="res://Game/Model/Tree_05.res" id="12_521cc"]
 [ext_resource type="ArrayMesh" uid="uid://02783d4i8wdf" path="res://Game/Model/Tree_04.res" id="13_v13q8"]
 [ext_resource type="ArrayMesh" uid="uid://bh5gxatgrryhn" path="res://Game/Model/Mailbox.res" id="14_v8p4d"]
+[ext_resource type="ArrayMesh" uid="uid://c6r83v4uod7q8" path="res://Game/Model/Dashboard.res" id="15_0ftwm"]
+[ext_resource type="ArrayMesh" uid="uid://uyvbq6j21dy8" path="res://Game/Model/Egg.res" id="16_u1j45"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgeu1"]
 albedo_color = Color(0.382691, 0.633828, 0.394315, 1)
@@ -50,18 +52,28 @@ transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 mesh = SubResource("PlaneMesh_7vhny")
 skeleton = NodePath("../..")
 
-[node name="Fence" type="MeshInstance3D" parent="Environment"]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 1.06538, 0)
+[node name="Fence1" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -30, 1, 0)
+mesh = ExtResource("7_1mfdf")
+skeleton = NodePath("../..")
+
+[node name="Fence2" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 1, 0)
+mesh = ExtResource("7_1mfdf")
+skeleton = NodePath("../..")
+
+[node name="Fence3" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 30, 1, 0)
 mesh = ExtResource("7_1mfdf")
 skeleton = NodePath("../..")
 
 [node name="Tree01" type="MeshInstance3D" parent="Environment"]
-transform = Transform3D(1.19153, 0, 0, 0, 2.3193, 0, 0, 0, 1.19153, -13.6774, 2.09206, -17.5126)
+transform = Transform3D(1.19153, 0, 0, 0, 2.3193, 0, 0, 0, 1.19153, 9.96025, 2.09206, -17.5126)
 mesh = ExtResource("9_uee62")
 skeleton = NodePath("../..")
 
 [node name="Tree02" type="MeshInstance3D" parent="Environment"]
-transform = Transform3D(0.957158, 0, -0.289566, 0, 1, 0, 0.289566, 0, 0.957158, 9.73825, 0.0270596, -15.3982)
+transform = Transform3D(0.957158, 0, -0.289566, 0, 1, 0, 0.289566, 0, 0.957158, -21.0117, 0.0270596, -15.3982)
 mesh = ExtResource("10_46k02")
 skeleton = NodePath("../..")
 
@@ -90,15 +102,43 @@ transform = Transform3D(0.395014, 0, -0.270209, 0, 0.478591, 0, 0.270209, 0, 0.3
 mesh = ExtResource("13_v13q8")
 skeleton = NodePath("../..")
 
+[node name="Mailbox" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(2.98505, 0, -2.22402, 0, 3.72247, 0, 2.22402, 0, 2.98505, -23.4503, 0, -14.3141)
+mesh = ExtResource("14_v8p4d")
+skeleton = NodePath("../..")
+
+[node name="Dashboard" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(-1.13834, 0, -3.8346, 0, 4, 0, 3.8346, 0, -1.13834, 37.9597, -1.90735e-06, -14.8703)
+mesh = ExtResource("15_0ftwm")
+skeleton = NodePath("../..")
+
+[node name="Egg1" type="MeshInstance3D" parent="Environment/Dashboard"]
+transform = Transform3D(-0.0498023, 0, 0.167764, 0, 0.175, 0, -0.167764, 0, -0.0498023, 0.0630569, 3.48357, 0.459511)
+mesh = ExtResource("16_u1j45")
+skeleton = NodePath("../../..")
+
+[node name="Egg2" type="MeshInstance3D" parent="Environment/Dashboard"]
+transform = Transform3D(-0.0498023, 0, 0.167764, 0, 0.175, 0, -0.167764, 0, -0.0498023, 0.0250635, 3.49269, -0.479723)
+mesh = ExtResource("16_u1j45")
+skeleton = NodePath("../../..")
+
+[node name="Label3D1" type="Label3D" parent="Environment/Dashboard"]
+transform = Transform3D(-0.0718283, 0, 0.997417, 0, 1, 0, -0.997417, 0, -0.0718283, 0.191266, 3.21397, 0.441291)
+text = "1234
+"
+font_size = 50
+
+[node name="Label3D2" type="Label3D" parent="Environment/Dashboard"]
+transform = Transform3D(0.00606692, 0.012632, 0.999902, -0.0038268, 0.999913, -0.0126089, -0.999974, -0.00374993, 0.00611469, 0.119437, 3.21447, -0.50255)
+text = "2000
+"
+font_size = 50
+
 [node name="Timer" type="Timer" parent="."]
 wait_time = 60.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.714595, 0.699539, 0, -0.699539, 0.714595, 0, 24.2471, 19.9244)
-
-[node name="Mailbox" type="MeshInstance3D" parent="."]
-transform = Transform3D(2.98505, 0, -2.22402, 0, 3.72247, 0, 2.22402, 0, 2.98505, 7.29963, 0, -14.3141)
-mesh = ExtResource("14_v8p4d")
 
 [connection signal="gui_input" from="UI/Money" to="." method="_on_money_gui_input"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
