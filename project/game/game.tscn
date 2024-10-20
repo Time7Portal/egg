@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=20 format=3 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
 [ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_vnxby"]
@@ -16,6 +16,7 @@
 [ext_resource type="ArrayMesh" uid="uid://bh5gxatgrryhn" path="res://Game/Model/Mailbox.res" id="14_v8p4d"]
 [ext_resource type="ArrayMesh" uid="uid://c6r83v4uod7q8" path="res://Game/Model/Dashboard.res" id="15_0ftwm"]
 [ext_resource type="ArrayMesh" uid="uid://uyvbq6j21dy8" path="res://Game/Model/Egg.res" id="16_u1j45"]
+[ext_resource type="ArrayMesh" uid="uid://blikvaj48v38x" path="res://Game/Model/Truck.res" id="17_344ja"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgeu1"]
 albedo_color = Color(0.382691, 0.633828, 0.394315, 1)
@@ -105,6 +106,11 @@ skeleton = NodePath("../..")
 [node name="Mailbox" type="MeshInstance3D" parent="Environment"]
 transform = Transform3D(2.98505, 0, -2.22402, 0, 3.72247, 0, 2.22402, 0, 2.98505, -23.4503, 0, -14.3141)
 mesh = ExtResource("14_v8p4d")
+skeleton = NodePath("../..")
+
+[node name="Truck" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(-0.689742, 0, -2.91963, 0, 3, 0, 2.91963, 0, -0.689742, 23.2959, 1.90735e-06, -16.788)
+mesh = ExtResource("17_344ja")
 skeleton = NodePath("../..")
 
 [node name="Dashboard" type="MeshInstance3D" parent="Environment"]
