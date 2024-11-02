@@ -3,11 +3,15 @@ class_name Manager
 
 @onready var gTimer: Timer = $Timer;
 @onready var gUIPanel: Node = $UI/Money/Label;
+@onready var gCamera: Camera3D = $Camera3D;
 
 @export var gHen: PackedScene;
 @export var gRooster: PackedScene;
 @export var gChick: PackedScene;
 @export var gEgg: PackedScene;
+
+@export var gScenePosition: Array[Vector3];
+@export var gSceneInterpolationTime: float = 1.3;
 
 static var gHenContainer: Array[Node];
 static var gRoosterContainer: Array[Node];
@@ -22,6 +26,14 @@ static var gCollectionEggCount: int = 0;
 static var gCoin: int = 0;
 
 static var gManagerNode:Node;
+
+# Screen Swipe Detation
+var length = 100;
+var startPos: Vector2;
+var curPos: Vector2;
+var swiping: bool = false;
+var targetSceneIndex: int = 1;
+var currentSceneIndex: int = 1;
 
 func _ready():
 	gManagerNode = self;
@@ -146,19 +158,34 @@ static func spawnChick(pos:Vector3) -> Node:
 	
 	return instance;
 	
-func _input(event):
-	if event.is_pressed() == false:
-		return;
-		
+func _input(event):		
+	#if not event is InputEventScreenTouch:
 	if event is InputEventMouse == false:
 		return;
 		
 	var mousePosition:Vector2 = event.position;
-	var result:Node = findEgg(mousePosition);
-	if result == null:
-		return;
-	
-	acquireEgg(result.get_parent());
+	if event.is_action_pressed("Click"):
+			startPos = mousePosition;
+	elif event.is_action_released("Click"):
+		curPos = mousePosition;
+		if startPos.distance_to(curPos) >= length:
+			if swiping:
+				return;
+				
+			swiping = true;
+			if curPos.x - startPos.x < 0:
+				# Right Swpie
+				targetSceneIndex = clampi(targetSceneIndex + 1, 0, gScenePosition.size() - 1);
+			else:
+				#Left Swipe
+				targetSceneIndex = clampi(targetSceneIndex - 1, 0, gScenePosition.size() - 1);
+		else	: #Click
+			print("Click!")
+			var result:Node = findEgg(mousePosition);
+			if result != null:
+				acquireEgg(result.get_parent());
+		
+		swiping = false;
 
 func findEgg(m_pos) -> Node:
 	var cam:Camera3D = get_viewport().get_camera_3d();
@@ -199,7 +226,12 @@ static func onRemoveAnimal(productivity:float) -> void:
 	
 static var testEggSpawnTime:float = 15;
 static var gEggProductAccumulateTime:float = 0;
-func _process(delta: float) -> void:
+func _process(delta: float) -> void:	
+	if targetSceneIndex != currentSceneIndex:
+		print("Swipe: ", gScenePosition[currentSceneIndex], " ", targetSceneIndex);
+		currentSceneIndex = targetSceneIndex;
+		gCamera.position = gScenePosition[currentSceneIndex];
+	
 	#TODO(Lee): 나중에 경제벨런스 고려해서 잘 수식화 필요
 	gEggProductAccumulateTime += delta;
 	

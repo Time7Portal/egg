@@ -25,13 +25,11 @@ material = SubResource("StandardMaterial3D_fgeu1")
 size = Vector2(10, 3)
 
 [node name="Manager" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.9605, 0, 0)
 script = ExtResource("1_4ph6a")
 gHen = ExtResource("2_vnxby")
 gRooster = ExtResource("3_lhbqb")
 gChick = ExtResource("4_mk8jr")
 gEgg = ExtResource("5_qtnkr")
-gScenePosition = Array[Vector3]([Vector3(0, 24, 20), Vector3(30, 24, 20), Vector3(60, 24, 20)])
 
 [node name="UI" type="Node" parent="."]
 
@@ -140,7 +138,7 @@ font_size = 50
 wait_time = 60.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.714595, 0.699539, 0, -0.699539, 0.714595, 60, 24, 20)
+transform = Transform3D(1, 0, 0, 0, 0.714595, 0.699539, 0, -0.699539, 0.714595, 0, 24.2471, 19.9244)
 
 [connection signal="gui_input" from="UI/Money" to="." method="_on_money_gui_input"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
