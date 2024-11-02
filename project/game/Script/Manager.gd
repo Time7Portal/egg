@@ -11,7 +11,7 @@ class_name Manager
 @export var gEgg: PackedScene;
 
 @export var gScenePosition: Array[Vector3];
-@export var gSceneInterpolationTime: float = 1.3;
+@export var gSceneInterpolationTime: float = 0.2;
 
 static var gHenContainer: Array[Node];
 static var gRoosterContainer: Array[Node];
@@ -28,12 +28,13 @@ static var gCoin: int = 0;
 static var gManagerNode:Node;
 
 # Screen Swipe Detation
+var tween: Tween;
 var length = 100;
 var startPos: Vector2;
 var curPos: Vector2;
 var swiping: bool = false;
-var targetSceneIndex: int = 1;
-var currentSceneIndex: int = 1;
+var targetSceneIndex: int = 2;
+var currentSceneIndex: int = 2;
 
 func _ready():
 	gManagerNode = self;
@@ -169,23 +170,20 @@ func _input(event):
 	elif event.is_action_released("Click"):
 		curPos = mousePosition;
 		if startPos.distance_to(curPos) >= length:
-			if swiping:
-				return;
-				
-			swiping = true;
 			if curPos.x - startPos.x < 0:
 				# Right Swpie
 				targetSceneIndex = clampi(targetSceneIndex + 1, 0, gScenePosition.size() - 1);
 			else:
 				#Left Swipe
 				targetSceneIndex = clampi(targetSceneIndex - 1, 0, gScenePosition.size() - 1);
+				
+			print("Tween: ", gScenePosition[targetSceneIndex]);
+			tween = create_tween();
+			tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex], gSceneInterpolationTime).set_ease(Tween.EASE_IN);
 		else	: #Click
-			print("Click!")
 			var result:Node = findEgg(mousePosition);
 			if result != null:
 				acquireEgg(result.get_parent());
-		
-		swiping = false;
 
 func findEgg(m_pos) -> Node:
 	var cam:Camera3D = get_viewport().get_camera_3d();
@@ -226,12 +224,7 @@ static func onRemoveAnimal(productivity:float) -> void:
 	
 static var testEggSpawnTime:float = 15;
 static var gEggProductAccumulateTime:float = 0;
-func _process(delta: float) -> void:	
-	if targetSceneIndex != currentSceneIndex:
-		print("Swipe: ", gScenePosition[currentSceneIndex], " ", targetSceneIndex);
-		currentSceneIndex = targetSceneIndex;
-		gCamera.position = gScenePosition[currentSceneIndex];
-	
+func _process(delta: float) -> void:		
 	#TODO(Lee): 나중에 경제벨런스 고려해서 잘 수식화 필요
 	gEggProductAccumulateTime += delta;
 	

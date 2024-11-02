@@ -16,7 +16,7 @@
 [ext_resource type="ArrayMesh" uid="uid://bh5gxatgrryhn" path="res://Game/Model/Mailbox.res" id="14_v8p4d"]
 [ext_resource type="ArrayMesh" uid="uid://c6r83v4uod7q8" path="res://Game/Model/Dashboard.res" id="15_0ftwm"]
 [ext_resource type="ArrayMesh" uid="uid://uyvbq6j21dy8" path="res://Game/Model/Egg.res" id="16_u1j45"]
-[ext_resource type="ArrayMesh" uid="uid://blikvaj48v38x" path="res://Game/Model/Truck.res" id="17_344ja"]
+[ext_resource type="ArrayMesh" path="res://Game/Model/Truck.res" id="17_344ja"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgeu1"]
 albedo_color = Color(0.382691, 0.633828, 0.394315, 1)
