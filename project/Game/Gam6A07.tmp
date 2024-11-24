@@ -37,6 +37,7 @@ gRooster = ExtResource("3_lhbqb")
 gChick = ExtResource("4_mk8jr")
 gEgg = ExtResource("5_qtnkr")
 gScenePosition = Array[Vector3]([Vector3(0, 24, 20), Vector3(30, 24, 20), Vector3(60, 24, 20)])
+gSceneInterpolationTime = null
 
 [node name="UI" type="Node" parent="."]
 

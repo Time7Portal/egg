@@ -33,28 +33,6 @@ var _currentLifeTime:float = 0;
 
 #region Develop
 var debugTargetPositionSphere: Node = null;
-
-# Add a debug sphere at global location.
-func draw_debug_sphere(location, size):
-	# Will usually work, but you might need to adjust this.
-	var scene_root = get_tree().root.get_children()[0]
-	# Create sphere with low detail of size.
-	var sphere = SphereMesh.new()
-	sphere.radial_segments = 4
-	sphere.rings = 4
-	sphere.radius = size
-	sphere.height = size * 2
-	# Bright red material (unshaded).
-	var material = StandardMaterial3D.new()
-	material.albedo_color = Color(1, 0, 0)
-	material.flags_unshaded = true
-	sphere.surface_set_material(0, material)
-	
-	# Add to meshinstance in the right place.
-	debugTargetPositionSphere = MeshInstance3D.new()
-	debugTargetPositionSphere.mesh = sphere
-	scene_root.add_child(debugTargetPositionSphere)
-	debugTargetPositionSphere.global_transform.origin = location
 #endregion
 
 func changeStateIDLE() -> void:	
@@ -92,7 +70,7 @@ func _process(delta: float) -> void:
 			if gCurrentIdleTime >= gIdleTime:
 				gTargetPosition = GlobalVariable.getRandomGroundPosition();
 				#Logger.LogDebug("Move: %s to %v" % [self.name, gTargetPosition]);
-				draw_debug_sphere(gTargetPosition, 0.2);
+				debugTargetPositionSphere = Utility.draw_debug_sphere(get_tree().root.get_children()[0], gTargetPosition, 0.2);
 				
 				var dir:Vector3 = gTargetPosition - self.position;
 				dir = dir.normalized();

@@ -31,7 +31,9 @@ static var gManagerNode:Node;
 var tween: Tween;
 var length = 100;
 var startPos: Vector2;
-var curPos: Vector2;
+var startNormal: Vector3;
+var currPos: Vector2;
+var currNormal: Vector3;
 var swiping: bool = false;
 var targetSceneIndex: int = 2;
 var currentSceneIndex: int = 2;
@@ -165,30 +167,36 @@ func _input(event):
 		return;
 		
 	var mousePosition:Vector2 = event.position;
+	currPos = mousePosition;
 	if event.is_action_pressed("Click"):
-			startPos = mousePosition;
+		startPos = mousePosition;
+		startNormal = gCamera.project_ray_normal(startPos);
+		swiping = true;
 	elif event.is_action_released("Click"):
-		curPos = mousePosition;
-		if startPos.distance_to(curPos) >= length:
-			if curPos.x - startPos.x < 0:
-				# Right Swpie
-				targetSceneIndex = clampi(targetSceneIndex + 1, 0, gScenePosition.size() - 1);
-			else:
-				#Left Swipe
-				targetSceneIndex = clampi(targetSceneIndex - 1, 0, gScenePosition.size() - 1);
-				
-			print("Tween: ", gScenePosition[targetSceneIndex]);
-			tween = create_tween();
-			tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex], gSceneInterpolationTime).set_ease(Tween.EASE_IN);
+		swiping = false;
+		currPos = mousePosition;
+		if startPos.distance_to(currPos) >= length:
+			currNormal = gCamera.project_ray_normal(currPos);
+			var startNormalYLength = startNormal.dot(Vector3.UP);
+			var currNormalYLength = currNormal.dot(Vector3.UP);
+			var cameraYLength = gCamera.position.y;
+			var startRayLengthToGround = abs(cameraYLength / startNormalYLength);
+			var currRayLengthToGround = abs(cameraYLength / currNormalYLength);
+			
+			var world3d:World3D = get_world_3d();
+			var space_state:PhysicsDirectSpaceState3D = world3d.direct_space_state;
+			var worldStartPosOnGround = gCamera.project_ray_origin(startPos) + startNormal * startRayLengthToGround;
+			var worldEndPosOnGround = gCamera.project_ray_origin(currPos) + currNormal * currRayLengthToGround;
+			Utility.draw_debug_sphere(get_tree().root.get_children()[0], worldStartPosOnGround, 0.2);
+			Utility.draw_debug_sphere(get_tree().root.get_children()[0], worldEndPosOnGround, 0.2);
 		else	: #Click
 			var result:Node = findEgg(mousePosition);
 			if result != null:
 				acquireEgg(result.get_parent());
-
-func findEgg(m_pos) -> Node:
-	var cam:Camera3D = get_viewport().get_camera_3d();
-	var ray_start:Vector3 = cam.project_ray_origin(m_pos);
-	var ray_end:Vector3 = ray_start + cam.project_ray_normal(m_pos) * 2000;
+	
+func findEgg(m_pos: Vector2) -> Node:
+	var ray_start:Vector3 = gCamera.project_ray_origin(m_pos);
+	var ray_end:Vector3 = ray_start + gCamera.project_ray_normal(m_pos) * 2000;
 	var world3d:World3D = get_world_3d();
 	var space_state:PhysicsDirectSpaceState3D = world3d.direct_space_state;
 	
@@ -256,3 +264,17 @@ static func onChickEvolution(chick: Node) -> void:
 		
 	gChickContainer.erase(chick);
 	chick.queue_free();
+
+func _on_left_button_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Click"):
+		targetSceneIndex = clampi(targetSceneIndex - 1, 0, gScenePosition.size() - 1);
+		
+		tween = create_tween();
+		tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex], gSceneInterpolationTime).set_ease(Tween.EASE_IN);
+
+func _on_right_button_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Click"):
+		targetSceneIndex = clampi(targetSceneIndex + 1, 0, gScenePosition.size() - 1);
+		
+		tween = create_tween();
+		tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex], gSceneInterpolationTime).set_ease(Tween.EASE_IN);
