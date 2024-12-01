@@ -27,12 +27,9 @@ class Status:
 	var _jumpHeight:float = 0.3; # MaxHeight, 현재는 고정으로 사용
 	var _productivity:float = 0;
 	
+var _farmIndex:int = 0;
 var _status:Status;
 var _currentLifeTime:float = 0;
-#endregion
-
-#region Develop
-var debugTargetPositionSphere: Node = null;
 #endregion
 
 func changeStateIDLE() -> void:	
@@ -50,10 +47,10 @@ func initializeStatus(lifeTime:float, speed:float, productivity:float) -> void:
 	_status._lifeTime = lifeTime;
 	_status._speed = speed;
 	_status._productivity = productivity;
-	Manager.onAddAnimal(_status._productivity);
+	Manager.onAddAnimal(self);
 	
 func _exit_tree() -> void:
-	Manager.onRemoveAnimal(_status._productivity);
+	Manager.onRemoveAnimal(self);
 	
 func processLifeTime() -> void:
 	if _currentLifeTime >= _status._lifeTime:
@@ -68,9 +65,8 @@ func _process(delta: float) -> void:
 		STATE.IDLE:
 			gCurrentIdleTime += delta;
 			if gCurrentIdleTime >= gIdleTime:
-				gTargetPosition = GlobalVariable.getRandomGroundPosition();
+				gTargetPosition = GlobalVariable.getRandomGroundPosition() + Manager.gManagerNode.gScenePosition[_farmIndex];
 				#Logger.LogDebug("Move: %s to %v" % [self.name, gTargetPosition]);
-				debugTargetPositionSphere = Utility.draw_debug_sphere(get_tree().root.get_children()[0], gTargetPosition, 0.2);
 				
 				var dir:Vector3 = gTargetPosition - self.position;
 				dir = dir.normalized();
@@ -92,7 +88,6 @@ func _process(delta: float) -> void:
 			if dist.length() <= 0.05:
 				moveDelta = gTargetPosition - self.position;
 				changeStateIDLE();
-				debugTargetPositionSphere.queue_free();
 				
 			self.position += moveDelta;
 			

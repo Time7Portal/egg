@@ -3,8 +3,8 @@ class_name GlobalVariable;
 
 static var gSavePath: String =  "user://saveFile.save";
 
-static var gGroundWitdh: float = 3;
-static var gGroundHeight: float = 5;
+static var gGroundWitdh: float = 8;
+static var gGroundHeight: float = 8;
 
 static var gMaxHatchTime:float = 3600 * 24 * 10;
 static var gMinHatchTime:float = 3600 * 24 * 5;
