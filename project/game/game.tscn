@@ -29,13 +29,14 @@ albedo_color = Color(0.382691, 0.633828, 0.394315, 1)
 material = SubResource("StandardMaterial3D_fgeu1")
 size = Vector2(10, 3)
 
-[node name="Manager" type="Node3D"]
+[node name="Manager" type="Node3D" node_paths=PackedStringArray("gEggDashBoardUIPanel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.9605, 0, 0)
 script = ExtResource("1_4ph6a")
 gHen = ExtResource("2_vnxby")
 gRooster = ExtResource("3_lhbqb")
 gChick = ExtResource("4_mk8jr")
 gEgg = ExtResource("5_qtnkr")
+gEggDashBoardUIPanel = [NodePath("Environment/Dashboard/EggText6"), NodePath("Environment/Dashboard/EggText5"), NodePath("Environment/Dashboard/EggText4"), NodePath("Environment/Dashboard/EggText3"), NodePath("Environment/Dashboard/EggText2"), NodePath("Environment/Dashboard/EggText1")]
 gScenePosition = Array[Vector3]([Vector3(0, 0, 0), Vector3(30, 0, 0), Vector3(60, 0, 0)])
 
 [node name="UI" type="Node" parent="."]
@@ -147,14 +148,38 @@ transform = Transform3D(-0.0498023, 0, 0.167764, 0, 0.175, 0, -0.167764, 0, -0.0
 mesh = ExtResource("16_u1j45")
 skeleton = NodePath("../../..")
 
-[node name="Label3D1" type="Label3D" parent="Environment/Dashboard"]
-transform = Transform3D(-0.0718283, 0, 0.997417, 0, 1, 0, -0.997417, 0, -0.0718283, 0.191266, 3.21397, 0.441291)
-text = "1234
+[node name="EggText1" type="Label3D" parent="Environment/Dashboard"]
+transform = Transform3D(0.00606692, 0.012632, 0.999902, -0.0038268, 0.999913, -0.0126089, -0.999974, -0.00374993, 0.00611466, 0.112905, 3.14816, 0.428865)
+text = "2000
 "
 font_size = 50
 
-[node name="Label3D2" type="Label3D" parent="Environment/Dashboard"]
-transform = Transform3D(0.00606692, 0.012632, 0.999902, -0.0038268, 0.999913, -0.0126089, -0.999974, -0.00374993, 0.00611469, 0.119437, 3.21447, -0.50255)
+[node name="EggText2" type="Label3D" parent="Environment/Dashboard"]
+transform = Transform3D(0.00606692, 0.012632, 0.999902, -0.0038268, 0.999913, -0.0126089, -0.999974, -0.00374993, 0.00611466, 0.118461, 3.13861, -0.499464)
+text = "2000
+"
+font_size = 50
+
+[node name="EggText3" type="Label3D" parent="Environment/Dashboard"]
+transform = Transform3D(0.00606692, 0.012632, 0.999902, -0.0038268, 0.999913, -0.0126089, -0.999974, -0.00374993, 0.00611469, 0.103526, 2.40573, 0.431649)
+text = "2000
+"
+font_size = 50
+
+[node name="EggText4" type="Label3D" parent="Environment/Dashboard"]
+transform = Transform3D(0.00606692, 0.012632, 0.999902, -0.0038268, 0.999913, -0.0126089, -0.999974, -0.00374993, 0.00611469, 0.109158, 2.40217, -0.496701)
+text = "2000
+"
+font_size = 50
+
+[node name="EggText5" type="Label3D" parent="Environment/Dashboard"]
+transform = Transform3D(0.00606692, 0.012632, 0.999902, -0.0038268, 0.999913, -0.0126089, -0.999974, -0.00374993, 0.00611469, 0.0904915, 1.37398, 0.435518)
+text = "2000
+"
+font_size = 50
+
+[node name="EggText6" type="Label3D" parent="Environment/Dashboard"]
+transform = Transform3D(0.00606692, 0.012632, 0.999902, -0.0038268, 0.999913, -0.0126089, -0.999974, -0.00374993, 0.00611469, 0.0961952, 1.37038, -0.504583)
 text = "2000
 "
 font_size = 50

@@ -4,8 +4,19 @@ class_name Egg;
 class Status:
 	var _hatchTime:float = 0;
 	
+enum Grade{
+	BRONZE, 
+	SILVER, 
+	GOLD, 
+	PLATINUM, 
+	DIAMOND, 
+	RAINBOW, 
+	COUNT
+}
+	
 var _farmIndex:int = 0;
 var _status:Status;
+var _grade = Grade.BRONZE;
 
 var _currentLifeTime:float = 0;
 	

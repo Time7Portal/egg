@@ -10,6 +10,8 @@ class_name Manager
 @export var gChick: PackedScene;
 @export var gEgg: PackedScene;
 
+@export var gEggDashBoardUIPanel: Array[Label3D];
+
 @export var gScenePosition: Array[Vector3];
 @export var gCameraRelativePosition:Vector3 = Vector3(0, 24, 20);
 @export var gSceneInterpolationTime: float = 0.2;
@@ -19,7 +21,7 @@ static var gManagerNode:Node;
 
 # Property
 static var gFarmArray: Array[Farm];
-static var gCollectionEggCount: int = 0;
+var gCollectionEggCount: Array[int];
 static var gCoin: int = 0;
 
 # Private
@@ -28,6 +30,7 @@ static var targetSceneIndex: int = 0;
 
 func _ready():
 	gManagerNode = self;
+	gCollectionEggCount.resize(int(Egg.Grade.COUNT));
 
 	tween = create_tween();
 	tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex] + gCameraRelativePosition, 0).set_ease(Tween.EASE_IN);
@@ -35,10 +38,19 @@ func _ready():
 	gFarmArray.resize(gScenePosition.size());
 	for index in range(gScenePosition.size()):
 		gFarmArray[index] = Farm.new();
+		gFarmArray[index]._eggContainer.resize(int(Egg.Grade.COUNT));
 		gFarmArray[index]._farmIndex = index;
 	
 	readSaveFile();
-	refreshCoinUI(0);
+	refreshCoinUI();
+	var gradeIndex = 0;
+	for gradeName in Egg.Grade:
+		if gradeIndex == int(Egg.Grade.COUNT):
+			continue;
+		
+		refreshEggDashboardUI(gradeIndex);
+		gradeIndex += 1;
+	
 	gTimer.start();
 	
 func _on_timer_timeout() -> void:
@@ -62,9 +74,20 @@ func readSaveFile():
 	file.close();
 	
 	if node_data.has("CollectionEgg"):
-		gCollectionEggCount = node_data["CollectionEgg"];
+		var gradeIndex = 0;
+		for gradeName in Egg.Grade:
+			if gradeIndex == int(Egg.Grade.COUNT):
+				continue;
+
+			gCollectionEggCount[gradeIndex] = int(node_data["CollectionEgg"][gradeIndex]);
+			gradeIndex += 1;
 	else:
-		gCollectionEggCount = 0;
+		var gradeIndex = 0;
+		for gradeName in Egg.Grade:
+			if gradeIndex == int(Egg.Grade.COUNT):
+				continue;
+			gCollectionEggCount[gradeIndex] = 0;
+			gradeIndex += 1;
 		
 	if node_data.has("Coin"):
 		gCoin = node_data["Coin"];
@@ -80,33 +103,52 @@ func writeSaveFile(initial: bool):
 	var file = FileAccess.open(GlobalVariable.gSavePath, FileAccess.WRITE);
 	
 	var saveData = {
-			"CollectionEgg": gCollectionEggCount, 
+			"CollectionEgg": [], 
 			"Coin": gCoin,
 			"Farm":	[]
 		};
-	if initial == false:
-		for farm in gFarmArray:
-			saveData["Farm"].append({"Hen": farm._henContainer.size(), "Rooster": farm._roosterContainer.size(), "Chick": farm._chickContainer.size(), "Egg": farm._eggContainer.size()});
-	else:
-		for farm in gFarmArray:
-			saveData["Farm"].append({"Hen": 1, "Rooster": 1, "Chick": 0, "Egg": 0});
+		
+	var gradeIndex = 0;
+	saveData["CollectionEgg"].resize(int(Egg.Grade.COUNT));
+	for gradeName in Egg.Grade:
+		if gradeIndex == int(Egg.Grade.COUNT):
+			continue;
+		
+		saveData["CollectionEgg"][gradeIndex] = gCollectionEggCount[gradeIndex];
+		gradeIndex += 1;
+		
+	for farm in gFarmArray:
+		var data = farm.writeSaveFile(initial);
+		saveData["Farm"].append(data);
 
 	var saveDataString:String = JSON.stringify(saveData);
 	file.store_line(saveDataString);
 	file.close();
 
-func refreshCoinUI(value:int) -> void:
-	gCollectionEggCount += value;
+func refreshCoinUI() -> void:
 	#https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_format_string.html
-	var format_string:String = "Egg %d $ %d";
-	var actual_string:String = format_string % [gCollectionEggCount, gCoin];
+	var format_string:String = "$ %d";
+	var actual_string:String = format_string % [gCoin];
 	gUIPanel.text = actual_string;
+
+func addCollectEggCount(grade, count) -> void:
+	gCollectionEggCount[int(grade)] += count;
+	refreshEggDashboardUI(grade);
+	
+func refreshEggDashboardUI(grade) -> void:
+	var format_string:String = "%d";
+	var actual_string:String = format_string % [gCollectionEggCount[int(grade)]];
+	gEggDashBoardUIPanel[int(grade)].text = actual_string;
 
 func _on_collect_button_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Click") == false:
 		return;
-		
-	refreshCoinUI(gFarmArray[targetSceneIndex]._eggContainer.size());
+
+	var gradeIndex = 0;
+	for container in gFarmArray[targetSceneIndex]._eggContainer:
+		addCollectEggCount(gradeIndex, container.size());
+		gradeIndex += 1;
+
 	gFarmArray[targetSceneIndex].clearEgg();
 
 static func onAddAnimal(animal:Animal) -> void:
@@ -138,7 +180,7 @@ func _input(event):
 	elif event.is_action_released("Click"):
 		if startPos.distance_to(currPos) >= length:
 			if currPos.x - startPos.x < 0:
-				# Right Swpie
+				# Right Swipe
 				targetSceneIndex = clampi(targetSceneIndex + 1, 0, gScenePosition.size() - 1);
 			else:
 				#Left Swipe

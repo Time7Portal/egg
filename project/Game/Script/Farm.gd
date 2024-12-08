@@ -4,7 +4,7 @@ class_name Farm;
 var _henContainer: Array[Node];
 var _roosterContainer: Array[Node];
 var _chickContainer: Array[Node];
-var _eggContainer: Array[Node];
+var _eggContainer: Array[Array];
 
 var _farmIndex: int;
 
@@ -15,11 +15,11 @@ func onAddAnimal(productivity:float) -> void:
 func onRemoveAnimal(productivity:float) -> void:
 	_totalProductivity -= productivity;
 func onEggHatching(egg: Node) -> void:
-	Logger.LogAssert(_eggContainer.find(egg) >= 0, "Spawn되지 않았던 Egg의 부화시도.");
+	Logger.LogAssert(_eggContainer[int(egg._grade)].find(egg) >= 0, "Spawn되지 않았던 Egg의 부화시도.");
 	var chick:Node = spawnChick(egg.position);
 	_chickContainer.push_back(chick);
 	
-	_eggContainer.erase(egg);
+	_eggContainer[int(egg._grade)].erase(egg);
 	egg.queue_free();
 func onChickEvolution(chick: Node) -> void:
 	Logger.LogAssert(_chickContainer.find(chick) >= 0, "Spawn되지 않았던 Chick의 성장시도.");
@@ -58,16 +58,17 @@ func spawnAnimal(prefab:PackedScene, pos:Vector3) -> Node:
 	
 	return instance;
 		
-func spawnEgg(pos:Vector3) -> Node:
+func spawnEgg(pos:Vector3, grade:Egg.Grade) -> void:
 	var instance:Node = spawn(Manager.gManagerNode.gEgg, pos);
 	
 	# TODO(Lee): SaveFile을 통해서 Spawn되는 경우 데이터를 유지할 필요가 있음
 	var egg:Egg = instance as Egg;
 	var hatchTime:float = Utility.randomRangeFloat(GlobalVariable.gMinHatchTime, GlobalVariable.gMaxHatchTime);
 	egg._farmIndex = _farmIndex;
+	egg._grade = grade;
 	egg.initializeStatus(hatchTime);
 	
-	return instance;
+	_eggContainer[int(grade)].push_back(egg);
 	
 func spawnChick(pos:Vector3) -> Node:
 	var instance:Node = spawn(Manager.gManagerNode.gChick, pos);
@@ -83,6 +84,29 @@ func spawnChick(pos:Vector3) -> Node:
 	
 	return instance;
 	
+func writeSaveFile(initial: bool):	
+	var data = {};
+	if initial:
+		data["Hen"] = 1;
+		data["Rooster"] = 1;
+		data["Chick"] = 0;
+	else:
+		data["Hen"] = _henContainer.size();
+		data["Rooster"] = _roosterContainer.size();
+		data["Chick"] = _chickContainer.size();
+	
+	data["Egg"] = {};
+	var gradeIndex = 0;
+	for gradeName in Egg.Grade:
+		if gradeIndex == int(Egg.Grade.COUNT):
+			continue;
+
+		var eggCount = _eggContainer[gradeIndex].size();
+		data["Egg"][gradeName] = eggCount;
+		gradeIndex = gradeIndex + 1;
+	
+	return data;
+	
 func readSaveFile(node_data):		
 	for i in node_data["Hen"]:
 		var hen:Node = spawnAnimal(Manager.gManagerNode.gHen, GlobalVariable.getRandomGroundPosition());
@@ -93,9 +117,18 @@ func readSaveFile(node_data):
 	for i in node_data["Chick"]:
 		var chick:Node = spawnChick(GlobalVariable.getRandomGroundPosition());
 		_chickContainer.push_back(chick);
-	for i in node_data["Egg"]:
-		var egg:Node = spawnEgg(GlobalVariable.getRandomGroundPosition());
-		_eggContainer.push_back(egg);
+		
+	var eggData = node_data["Egg"];
+	var gradeIndex = 0;
+	for gradeName in Egg.Grade:
+		if gradeIndex == int(Egg.Grade.COUNT):
+			continue;
+
+		if gradeName in eggData:
+			for i in eggData[gradeName]:
+				spawnEgg(GlobalVariable.getRandomGroundPosition(), gradeIndex);
+				
+		gradeIndex = gradeIndex + 1;
 
 static var testEggSpawnTime:float = 15;
 var gEggProductAccumulateTime:float = 0;
@@ -103,14 +136,15 @@ func update(delta: float) -> void:
 	#TODO(Lee): 나중에 경제벨런스 고려해서 잘 수식화 필요
 	gEggProductAccumulateTime += delta;
 	
+	var tempEggGrade = Utility.randomRangeInt(0, int(Egg.Grade.COUNT) - 1);
+	
 	var tempProductivity = log(_totalProductivity + 1);
 	if testEggSpawnTime - (gEggProductAccumulateTime + tempProductivity) < 0:
-		var egg:Node = spawnEgg(GlobalVariable.getRandomGroundPosition());
-		_eggContainer.push_back(egg);
+		spawnEgg(GlobalVariable.getRandomGroundPosition(), tempEggGrade);
 		gEggProductAccumulateTime = 0;
 
 func clearEgg():
-	for egg in _eggContainer:
-		egg.queue_free();
-			
-	_eggContainer.clear();
+	for eggGroup in _eggContainer:
+		for egg in eggGroup:
+			egg.queue_free();
+		eggGroup.clear();

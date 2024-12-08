@@ -31,3 +31,6 @@ static func randomRangeFloat(rangeMin:float, rangeMax:float) -> float:
 	
 static func randomFloat() -> float:
 	return RNG.randf();
+	
+static func randomRangeInt(min:int, max:int) -> int:
+	return RNG.randi_range(min, max);
