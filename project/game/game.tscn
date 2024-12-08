@@ -47,37 +47,18 @@ anchor_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 1
 
-[node name="LeftButton" type="Panel" parent="UI"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -248.0
-offset_top = -149.0
-offset_right = -160.0
-offset_bottom = -61.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="RightButton" type="Panel" parent="UI"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -130.0
-offset_top = -149.0
-offset_right = -42.0
-offset_bottom = -61.0
-grow_horizontal = 0
-grow_vertical = 0
-
 [node name="CollectButton" type="Panel" parent="UI"]
-offset_left = 591.0
-offset_top = 1022.0
-offset_right = 679.0
-offset_bottom = 1110.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -153.0
+offset_top = -160.0
+offset_right = -65.0
+offset_bottom = -72.0
+grow_horizontal = 0
+grow_vertical = 0
 
 [node name="Environment" type="Node" parent="."]
 
@@ -202,7 +183,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.6982, 0.943442, -20.8682)
 mesh = ExtResource("21_eqqxx")
 
 [connection signal="gui_input" from="UI/Money" to="." method="_on_money_gui_input"]
-[connection signal="gui_input" from="UI/LeftButton" to="." method="_on_left_button_gui_input"]
-[connection signal="gui_input" from="UI/RightButton" to="." method="_on_right_button_gui_input"]
 [connection signal="gui_input" from="UI/CollectButton" to="." method="_on_collect_button_gui_input"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -102,22 +102,6 @@ func refreshCoinUI(value:int) -> void:
 	var actual_string:String = format_string % [gCollectionEggCount, gCoin];
 	gUIPanel.text = actual_string;
 
-func _on_left_button_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("Click") == false:
-		return;
-		
-	targetSceneIndex = clampi(targetSceneIndex - 1, 0, gScenePosition.size() - 1);
-	tween = create_tween();
-	tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex] + gCameraRelativePosition, gSceneInterpolationTime).set_ease(Tween.EASE_IN);
-
-func _on_right_button_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("Click") == false:
-		return;
-	
-	targetSceneIndex = clampi(targetSceneIndex + 1, 0, gScenePosition.size() - 1);
-	tween = create_tween();
-	tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex] + gCameraRelativePosition, gSceneInterpolationTime).set_ease(Tween.EASE_IN);
-
 func _on_collect_button_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Click") == false:
 		return;
@@ -137,3 +121,28 @@ static func onChickEvolution(chick: Node) -> void:
 func _process(delta: float) -> void:
 	for farm in gFarmArray:
 		farm.update(delta);
+
+var length = 100;
+var startPos: Vector2;
+var currPos: Vector2;
+var swiping: bool = false;
+func _input(event):		
+	#if not event is InputEventScreenTouch:
+	if event is InputEventMouse == false:
+		return;
+		
+	currPos = event.position;
+	if event.is_action_pressed("Click"):
+		startPos = currPos;
+		swiping = true;
+	elif event.is_action_released("Click"):
+		if startPos.distance_to(currPos) >= length:
+			if currPos.x - startPos.x < 0:
+				# Right Swpie
+				targetSceneIndex = clampi(targetSceneIndex + 1, 0, gScenePosition.size() - 1);
+			else:
+				#Left Swipe
+				targetSceneIndex = clampi(targetSceneIndex - 1, 0, gScenePosition.size() - 1);
+			tween = create_tween();
+			tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex] + gCameraRelativePosition, gSceneInterpolationTime).set_ease(Tween.EASE_IN);
+		swiping = false;
