@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=4 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=51 format=4 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
 [ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_vnxby"]
@@ -18,6 +18,7 @@
 [ext_resource type="ArrayMesh" uid="uid://c6r83v4uod7q8" path="res://Game/Model/Dashboard.res" id="15_0ftwm"]
 [ext_resource type="ArrayMesh" uid="uid://blikvaj48v38x" path="res://Game/Model/Truck.res" id="17_344ja"]
 [ext_resource type="ArrayMesh" uid="uid://dci1qx8jkphmm" path="res://Game/Model/City_Buildings.res" id="18_6yqxx"]
+[ext_resource type="Shader" path="res://Game/Texture/RainbowMaterial.gdshader" id="18_xw8uk"]
 [ext_resource type="ArrayMesh" uid="uid://cccg06gb7c1wy" path="res://Game/Model/City_Enterance.res" id="19_ro82f"]
 [ext_resource type="ArrayMesh" uid="uid://cfre2e104lrb" path="res://Game/Model/City_Text.res" id="20_88e4x"]
 [ext_resource type="ArrayMesh" uid="uid://c8hirnf05l1ju" path="res://Game/Model/City_Road.res" id="21_eqqxx"]
@@ -1941,11 +1942,12 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_x7ceo")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1joxq"]
-resource_name = "Material.001"
-cull_mode = 2
-albedo_color = Color(1, 0.5, 1, 1)
-roughness = 0.5
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_svhjs"]
+render_priority = 0
+shader = ExtResource("18_xw8uk")
+shader_parameter/width = 20.0
+shader_parameter/portion = 0.0
+shader_parameter/speed = -10.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_bu7ow"]
 resource_name = "egg_Sphere"
@@ -1956,7 +1958,7 @@ _surfaces = [{
 "index_count": 198,
 "index_data": PackedByteArray("AAADAAEAGAAJACwABgABAAcAAQADAAcAAwACAAQABgAHAAoABwAIAAoACAANAAoACQARAAsADgALABAACAAOAA0AEAARABUADAANABIADwAOABMADwATABQAEgAPABQADAAdAAUAHQASABoAFAATABwAFAAcABkAGQAcAB8AFQArABwAGgAZACMAHQAaACYAHwAcACEAJwAbACkAJAAgACIAJAAiACoAKgAiAC0AJQAqAAAAJwApAAEAKQAlAAEAJQAAAAEAAAAqAAIAAQAGACcAAAACAAMACQAEAAIAAwAIAAcAAwAEAAgACgAMAAYACQALAAQABAALAAgACAALAA4ACgANAAwACwARABAACQAXABEADgAPAA0ADgAQABMADwASAA0AFwAVABEAFQATABAADAASAB0AFQAcABMACQAtACwACQACAC0AFAAaABIAFAAZABoAFQAWACsAGQAfACMAKwAhABwAGgAjACgAHgAnAAYALAAtACIAJAAlACkAJAAqACUAKgAtAAIA"),
 "lods": [0.271911, PackedByteArray("eQB8AHoAgAB6AHwAegCAAJsAlACbAIAAmwCdAHoAnQB5AHoAmwCSAJ0AgAB8AIMAgwCFAIAAfACBAIMAgwCGAIUAgQCGAIMAfAB+AIEAgQCHAIYAgQCEAIcAfgCEAIEAhACPAIcAggCPAIQAggCEAH4AiACPAIwAjACLAIgAjAAWAJ8AnwCWAI4AggB+AHsAfQB7AH4AeQB7AH0AggB7AKAAGACCAKAAeQCeAHsAngCgAHsAnQCeAHkAngCXAKAAmQCeAJ0AmQCXAJ4AhQCGAIoAiQCKAIYAigCJAIsAhQCKAJMAhQCTAH8AkwCKAJEAiwCRAIoAkwCRAJoAiwCQAJEAiwCNAJAAkACNAJUAkACVAJgAkQCQAJgAkQCYAJwA"), 0.35583, PackedByteArray("GABcAHIAXABbAHIAXABeAFkAXABrAF4AWQBdAGAAXQBjAGAAXgBrAGMAZABrAGgAaABqAHEAaABnAGMAZQBjAGcAYQBjAGUAZwBsAGUAdABmAGwAYgBmAHQAZwBpAG0AbQBpAHAAbgBwAHcAdQBWAFgAdQBYAF8AVgBzAFoAeABzAFcAdgB4AFYAdgBvAHgA"), 0.650208, PackedByteArray("GABAAFQAQwA/AFQASwBKAEAAQAAXAEsASwBNAFMAUAA8AEQASABMAE4ATgBMAFIARwBIAE8AUQBVAD0APgBBAEUAQgBJAEYA"), 1.37756, PackedByteArray("GAAuADoALgAXADQANAA3ADkAOwAvADEAMAA1ADIAMwA2ADgA")],
-"material": SubResource("StandardMaterial3D_1joxq"),
+"material": SubResource("ShaderMaterial_svhjs"),
 "name": "Material.001",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),

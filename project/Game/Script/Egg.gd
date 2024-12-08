@@ -1,6 +1,8 @@
 extends Node
 class_name Egg;
 
+const RAINBOW_MATERIAL = preload("res://Game/Texture/RainbowMaterial.tres")
+
 @onready var egg: MeshInstance3D = $".";
 var _farmIndex:int = 0;
 var _currentLifeTime:float = 0;
@@ -44,7 +46,7 @@ enum Grade{
 				egg.set_surface_override_material(0, material)
 			Grade.RAINBOW:
 				material.albedo_color = Color(1, 0.5, 1);
-				egg.set_surface_override_material(0, material)
+				egg.set_surface_override_material(0, RAINBOW_MATERIAL)
 
 
 func initializeStatus(hatchTime:float) -> void:
