@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dtl7w3hxoeve2" path="res://Game/Rooster.tscn" id="3_lhbqb"]
 [ext_resource type="PackedScene" uid="uid://bky28uib6kuuo" path="res://Game/Chick.tscn" id="4_mk8jr"]
 [ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://Game/Egg.tscn" id="5_qtnkr"]
-[ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://Game/UI/Money2.tscn" id="6_skfyy"]
+[ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://Game/UI/Money.tscn" id="6_skfyy"]
 [ext_resource type="PackedScene" uid="uid://ny5tgg2t88o0" path="res://Game/Skybox.tscn" id="6_uggsq"]
 [ext_resource type="ArrayMesh" uid="uid://cl1oeltbeukpd" path="res://Game/Model/Fence.res" id="7_1mfdf"]
 [ext_resource type="StyleBox" uid="uid://fufmpbdrhct3" path="res://Game/UI/ButtonStyle.tres" id="7_wmfsc"]
