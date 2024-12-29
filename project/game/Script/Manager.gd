@@ -9,6 +9,7 @@ class_name Manager
 @export var gRooster: PackedScene;
 @export var gChick: PackedScene;
 @export var gEgg: PackedScene;
+@export var gPoop: PackedScene;
 
 @export var gEggDashBoardUIPanel: Array[Label3D];
 
@@ -80,13 +81,16 @@ func readSaveFile():
 				continue;
 
 			gCollectionEggCount[gradeIndex] = int(node_data["CollectionEgg"][gradeIndex]);
+			refreshEggDashboardUI(gradeIndex);
 			gradeIndex += 1;
 	else:
 		var gradeIndex = 0;
 		for gradeName in Egg.Grade:
 			if gradeIndex == int(Egg.Grade.COUNT):
 				continue;
+
 			gCollectionEggCount[gradeIndex] = 0;
+			refreshEggDashboardUI(gradeIndex);
 			gradeIndex += 1;
 		
 	if node_data.has("Coin"):
@@ -138,13 +142,14 @@ func addCollectEggCount(grade, count) -> void:
 func refreshEggDashboardUI(grade) -> void:
 	var format_string:String = "%d";
 	var actual_string:String = format_string % [gCollectionEggCount[int(grade)]];
+	print("Refresh: ", grade, " / ", actual_string);
 	gEggDashBoardUIPanel[int(grade)].text = actual_string;
 
 func _on_collect_button_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("Click") == false:
 		return;
 
-	var gradeIndex = 0;
+	var gradeIndex:int = 0;
 	for container in gFarmArray[targetSceneIndex]._eggContainer:
 		addCollectEggCount(gradeIndex, container.size());
 		gradeIndex += 1;

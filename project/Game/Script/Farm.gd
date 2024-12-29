@@ -5,6 +5,7 @@ var _henContainer: Array[Node];
 var _roosterContainer: Array[Node];
 var _chickContainer: Array[Node];
 var _eggContainer: Array[Array];
+var _poopContainer: Array[Node];
 
 var _farmIndex: int;
 
@@ -43,7 +44,6 @@ func spawn(prefab: PackedScene, pos: Vector3) -> Node:
 	instance.position = worldPos;
 		
 	return instance;
-		
 func spawnAnimal(prefab:PackedScene, pos:Vector3) -> Node:
 	var instance:Node = spawn(prefab, pos);
 	var animal:Animal = instance as Animal;
@@ -56,8 +56,7 @@ func spawnAnimal(prefab:PackedScene, pos:Vector3) -> Node:
 	animal._farmIndex = _farmIndex;
 	animal.initializeStatus(lifeTime, speed, productivity);
 	
-	return instance;
-		
+	return instance;	
 func spawnEgg(pos:Vector3, grade:Egg.Grade) -> void:
 	var instance:Node = spawn(Manager.gManagerNode.gEgg, pos);
 	
@@ -69,7 +68,6 @@ func spawnEgg(pos:Vector3, grade:Egg.Grade) -> void:
 	egg.initializeStatus(hatchTime);
 	
 	_eggContainer[int(grade)].push_back(egg);
-	
 func spawnChick(pos:Vector3) -> Node:
 	var instance:Node = spawn(Manager.gManagerNode.gChick, pos);
 	var chick:Chick = instance as Chick;
@@ -83,17 +81,22 @@ func spawnChick(pos:Vector3) -> Node:
 	chick.initializeStatus(lifeTime, speed, productivity);
 	
 	return instance;
-	
+func spawnPoop(pos:Vector3) -> Node:
+	var instance:Node = spawn(Manager.gManagerNode.gPoop, pos);
+	return instance;
+
 func writeSaveFile(initial: bool):	
 	var data = {};
 	if initial:
 		data["Hen"] = 1;
 		data["Rooster"] = 1;
 		data["Chick"] = 0;
+		data["Poop"] = 0;
 	else:
 		data["Hen"] = _henContainer.size();
 		data["Rooster"] = _roosterContainer.size();
 		data["Chick"] = _chickContainer.size();
+		data["Poop"] = _poopContainer.size();
 	
 	data["Egg"] = {};
 	var gradeIndex = 0;
@@ -107,28 +110,39 @@ func writeSaveFile(initial: bool):
 	
 	return data;
 	
-func readSaveFile(node_data):		
-	for i in node_data["Hen"]:
-		var hen:Node = spawnAnimal(Manager.gManagerNode.gHen, GlobalVariable.getRandomGroundPosition());
-		_henContainer.push_back(hen);
-	for i in node_data["Rooster"]:
-		var rooster:Node = spawnAnimal(Manager.gManagerNode.gRooster, GlobalVariable.getRandomGroundPosition());
-		_roosterContainer.push_back(rooster);
-	for i in node_data["Chick"]:
-		var chick:Node = spawnChick(GlobalVariable.getRandomGroundPosition());
-		_chickContainer.push_back(chick);
-		
-	var eggData = node_data["Egg"];
-	var gradeIndex = 0;
-	for gradeName in Egg.Grade:
-		if gradeIndex == int(Egg.Grade.COUNT):
-			continue;
+func readSaveFile(node_data):
+	if(node_data.has("Hen")):
+		for i in node_data["Hen"]:
+			var hen:Node = spawnAnimal(Manager.gManagerNode.gHen, GlobalVariable.getRandomGroundPosition());
+			_henContainer.push_back(hen);
 
-		if gradeName in eggData:
-			for i in eggData[gradeName]:
-				spawnEgg(GlobalVariable.getRandomGroundPosition(), gradeIndex);
+	if(node_data.has("Rooster")):
+		for i in node_data["Rooster"]:
+			var rooster:Node = spawnAnimal(Manager.gManagerNode.gRooster, GlobalVariable.getRandomGroundPosition());
+			_roosterContainer.push_back(rooster);
+	
+	if(node_data.has("Chick")):
+		for i in node_data["Chick"]:
+			var chick:Node = spawnChick(GlobalVariable.getRandomGroundPosition());
+			_chickContainer.push_back(chick);
+	
+	if(node_data.has("Poop")):
+		for i in node_data["Poop"]:
+			var poop:Node = spawnPoop(GlobalVariable.getRandomGroundPosition());
+			_poopContainer.push_back(poop);
+		
+	if(node_data.has("Poop")):
+		var eggData = node_data["Egg"];
+		var gradeIndex = 0;
+		for gradeName in Egg.Grade:
+			if gradeIndex == int(Egg.Grade.COUNT):
+				continue;
+
+			if gradeName in eggData:
+				for i in eggData[gradeName]:
+					spawnEgg(GlobalVariable.getRandomGroundPosition(), gradeIndex);
 				
-		gradeIndex = gradeIndex + 1;
+			gradeIndex = gradeIndex + 1;
 
 static var testEggSpawnTime:float = 15;
 var gEggProductAccumulateTime:float = 0;

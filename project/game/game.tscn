@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=4 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=56 format=4 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
 [ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_vnxby"]
@@ -7,9 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://hyj2ny1ibqmq" path="res://Game/Egg.tscn" id="5_qtnkr"]
 [ext_resource type="PackedScene" uid="uid://bp3q6e42e1vw4" path="res://Game/UI/Money.tscn" id="6_skfyy"]
 [ext_resource type="PackedScene" uid="uid://ny5tgg2t88o0" path="res://Game/Skybox.tscn" id="6_uggsq"]
-[ext_resource type="ArrayMesh" uid="uid://cl1oeltbeukpd" path="res://Game/Model/Fence.res" id="7_1mfdf"]
+[ext_resource type="PackedScene" uid="uid://dgih8jlkfnnmt" path="res://Game/Poop.tscn" id="6_vyw4d"]
+[ext_resource type="ArrayMesh" path="res://Game/Model/Fence.res" id="7_1mfdf"]
 [ext_resource type="StyleBox" uid="uid://fufmpbdrhct3" path="res://Game/UI/ButtonStyle.tres" id="7_wmfsc"]
 [ext_resource type="PackedScene" uid="uid://cptqklopde6xl" path="res://Game/UI/Store.tscn" id="8_qxjs4"]
+[ext_resource type="Script" path="res://Game/Script/City.gd" id="8_vkh3w"]
 [ext_resource type="ArrayMesh" uid="uid://4qpile3dkw75" path="res://Game/Model/Tree_01.res" id="9_uee62"]
 [ext_resource type="ArrayMesh" uid="uid://dimugyrgsqn5p" path="res://Game/Model/Tree_02.res" id="10_46k02"]
 [ext_resource type="ArrayMesh" uid="uid://kge4s8rxataq" path="res://Game/Model/Tree_03.res" id="11_om77w"]
@@ -17,11 +19,11 @@
 [ext_resource type="ArrayMesh" uid="uid://02783d4i8wdf" path="res://Game/Model/Tree_04.res" id="13_v13q8"]
 [ext_resource type="ArrayMesh" uid="uid://bh5gxatgrryhn" path="res://Game/Model/Mailbox.res" id="14_v8p4d"]
 [ext_resource type="ArrayMesh" uid="uid://c6r83v4uod7q8" path="res://Game/Model/Dashboard.res" id="15_0ftwm"]
-[ext_resource type="ArrayMesh" uid="uid://blikvaj48v38x" path="res://Game/Model/Truck.res" id="17_344ja"]
+[ext_resource type="ArrayMesh" path="res://Game/Model/Truck.res" id="17_344ja"]
 [ext_resource type="ArrayMesh" uid="uid://dci1qx8jkphmm" path="res://Game/Model/City_Buildings.res" id="18_6yqxx"]
 [ext_resource type="Shader" path="res://Game/Texture/RainbowMaterial.gdshader" id="18_xw8uk"]
 [ext_resource type="ArrayMesh" uid="uid://cccg06gb7c1wy" path="res://Game/Model/City_Enterance.res" id="19_ro82f"]
-[ext_resource type="ArrayMesh" uid="uid://cfre2e104lrb" path="res://Game/Model/City_Text.res" id="20_88e4x"]
+[ext_resource type="ArrayMesh" uid="uid://cfre2e104lrb" path="res://Game/Model/city_Text.res" id="20_88e4x"]
 [ext_resource type="ArrayMesh" uid="uid://c8hirnf05l1ju" path="res://Game/Model/City_Road.res" id="21_eqqxx"]
 [ext_resource type="ArrayMesh" uid="uid://dshw3yk5t3yor" path="res://Game/Model/Robot_Vacuum.res" id="23_1y615"]
 [ext_resource type="ArrayMesh" uid="uid://b84p20ek2m55o" path="res://Game/Model/poop.res" id="24_3t6if"]
@@ -2036,7 +2038,8 @@ gHen = ExtResource("2_vnxby")
 gRooster = ExtResource("3_lhbqb")
 gChick = ExtResource("4_mk8jr")
 gEgg = ExtResource("5_qtnkr")
-gEggDashBoardUIPanel = [NodePath("Environment/Dashboard/EggText_RAINBOW"), NodePath("Environment/Dashboard/EggText_DIAMOND"), NodePath("Environment/Dashboard/EggText_PLATINUM"), NodePath("Environment/Dashboard/EggText_GOLD"), NodePath("Environment/Dashboard/EggText_SILVER"), NodePath("Environment/Dashboard/EggText_BRONZE")]
+gPoop = ExtResource("6_vyw4d")
+gEggDashBoardUIPanel = [NodePath("Environment/Dashboard/EggText_BRONZE"), NodePath("Environment/Dashboard/EggText_SILVER"), NodePath("Environment/Dashboard/EggText_GOLD"), NodePath("Environment/Dashboard/EggText_PLATINUM"), NodePath("Environment/Dashboard/EggText_DIAMOND"), NodePath("Environment/Dashboard/EggText_RAINBOW")]
 gScenePosition = Array[Vector3]([Vector3(0, 0, 0), Vector3(30, 0, 0), Vector3(60, 0, 0)])
 
 [node name="UI" type="Node" parent="."]
@@ -2101,7 +2104,30 @@ grow_vertical = 2
 theme = SubResource("Theme_q1i4q")
 text = "관리"
 
+[node name="CityButton" type="Control" parent="UI" node_paths=PackedStringArray("_storeUI")]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -112.0
+offset_right = 134.0
+offset_bottom = 231.0
+grow_horizontal = 2
+script = ExtResource("8_vkh3w")
+_storeUI = NodePath("../StoreWindow")
+
+[node name="Panel" type="Panel" parent="UI/CityButton"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [node name="StoreWindow" parent="UI" instance=ExtResource("8_qxjs4")]
+visible = false
 
 [node name="Environment" type="Node" parent="."]
 
@@ -2294,4 +2320,5 @@ mesh = ExtResource("24_3t6if")
 [connection signal="gui_input" from="UI/BottomButtons/CollectButton" to="." method="_on_collect_button_gui_input"]
 [connection signal="gui_input" from="UI/BottomButtons/CleanButton" to="." method="_on_collect_button_gui_input"]
 [connection signal="gui_input" from="UI/BottomButtons/ManageButton" to="." method="_on_collect_button_gui_input"]
+[connection signal="gui_input" from="UI/CityButton" to="UI/CityButton" method="_on_gui_input"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
