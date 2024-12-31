@@ -16,12 +16,12 @@ static func draw_debug_sphere(parent, location, size) -> MeshInstance3D:
 	sphere.surface_set_material(0, material)
 	
 	# Add to meshinstance in the right place.
-	var debugTargetPositionSphere = MeshInstance3D.new()
-	debugTargetPositionSphere.mesh = sphere
-	parent.add_child(debugTargetPositionSphere)
-	debugTargetPositionSphere.global_transform.origin = location
+	var debu_targetPositionSphere = MeshInstance3D.new()
+	debu_targetPositionSphere.mesh = sphere
+	parent.add_child(debu_targetPositionSphere)
+	debu_targetPositionSphere.global_transform.origin = location
 	
-	return debugTargetPositionSphere;
+	return debu_targetPositionSphere;
 #endregion
 
 static var RNG = RandomNumberGenerator.new();
@@ -32,5 +32,5 @@ static func randomRangeFloat(rangeMin:float, rangeMax:float) -> float:
 static func randomFloat() -> float:
 	return RNG.randf();
 	
-static func randomRangeInt(min:int, max:int) -> int:
-	return RNG.randi_range(min, max);
+static func randomRangeInt(rangeMin:int, rangeMax:int) -> int:
+	return RNG.randi_range(rangeMin, rangeMax);

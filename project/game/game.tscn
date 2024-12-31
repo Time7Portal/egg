@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=4 uid="uid://whmjiw60db4y"]
+[gd_scene load_steps=54 format=4 uid="uid://whmjiw60db4y"]
 
 [ext_resource type="Script" path="res://Game/Script/Manager.gd" id="1_4ph6a"]
 [ext_resource type="PackedScene" uid="uid://be1wl3yrnefad" path="res://Game/Hen.tscn" id="2_vnxby"]
@@ -25,8 +25,6 @@
 [ext_resource type="ArrayMesh" uid="uid://cccg06gb7c1wy" path="res://Game/Model/City_Enterance.res" id="19_ro82f"]
 [ext_resource type="ArrayMesh" uid="uid://cfre2e104lrb" path="res://Game/Model/city_Text.res" id="20_88e4x"]
 [ext_resource type="ArrayMesh" uid="uid://c8hirnf05l1ju" path="res://Game/Model/City_Road.res" id="21_eqqxx"]
-[ext_resource type="ArrayMesh" uid="uid://dshw3yk5t3yor" path="res://Game/Model/Robot_Vacuum.res" id="23_1y615"]
-[ext_resource type="ArrayMesh" uid="uid://b84p20ek2m55o" path="res://Game/Model/poop.res" id="24_3t6if"]
 
 [sub_resource type="Image" id="Image_nmnvk"]
 data = {
@@ -2032,7 +2030,6 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_x7ceo")
 
 [node name="Manager" type="Node3D" node_paths=PackedStringArray("gEggDashBoardUIPanel")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.9605, 0, 0)
 script = ExtResource("1_4ph6a")
 gHen = ExtResource("2_vnxby")
 gRooster = ExtResource("3_lhbqb")
@@ -2040,7 +2037,7 @@ gChick = ExtResource("4_mk8jr")
 gEgg = ExtResource("5_qtnkr")
 gPoop = ExtResource("6_vyw4d")
 gEggDashBoardUIPanel = [NodePath("Environment/Dashboard/EggText_BRONZE"), NodePath("Environment/Dashboard/EggText_SILVER"), NodePath("Environment/Dashboard/EggText_GOLD"), NodePath("Environment/Dashboard/EggText_PLATINUM"), NodePath("Environment/Dashboard/EggText_DIAMOND"), NodePath("Environment/Dashboard/EggText_RAINBOW")]
-gScenePosition = Array[Vector3]([Vector3(0, 0, 0), Vector3(30, 0, 0), Vector3(60, 0, 0)])
+gScenePosition = Array[Vector3]([Vector3(-30, 0, 0), Vector3(0, 0, 0), Vector3(30, 0, 0)])
 
 [node name="UI" type="Node" parent="."]
 
@@ -2308,17 +2305,8 @@ wait_time = 60.0
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.714595, 0.699539, 0, -0.699539, 0.714595, 60, 24, 20)
 
-[node name="RobotVacuum" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.23056, 0, 0.857746, 0, 1.5, 0, -0.857746, 0, 1.23056, 33.2088, 0, 2.61251)
-mesh = ExtResource("23_1y615")
-
-[node name="Poop" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.903, 0, 0.603172)
-mesh = ExtResource("24_3t6if")
-
 [connection signal="gui_input" from="UI/Money" to="." method="_on_money_gui_input"]
 [connection signal="gui_input" from="UI/BottomButtons/CollectButton" to="." method="_on_collect_button_gui_input"]
-[connection signal="gui_input" from="UI/BottomButtons/CleanButton" to="." method="_on_collect_button_gui_input"]
-[connection signal="gui_input" from="UI/BottomButtons/ManageButton" to="." method="_on_collect_button_gui_input"]
+[connection signal="gui_input" from="UI/BottomButtons/CleanButton" to="." method="_on_clean_button_gui_input"]
 [connection signal="gui_input" from="UI/CityButton" to="UI/CityButton" method="_on_gui_input"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -142,19 +142,7 @@ func addCollectEggCount(grade, count) -> void:
 func refreshEggDashboardUI(grade) -> void:
 	var format_string:String = "%d";
 	var actual_string:String = format_string % [gCollectionEggCount[int(grade)]];
-	print("Refresh: ", grade, " / ", actual_string);
 	gEggDashBoardUIPanel[int(grade)].text = actual_string;
-
-func _on_collect_button_gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("Click") == false:
-		return;
-
-	var gradeIndex:int = 0;
-	for container in gFarmArray[targetSceneIndex]._eggContainer:
-		addCollectEggCount(gradeIndex, container.size());
-		gradeIndex += 1;
-
-	gFarmArray[targetSceneIndex].clearEgg();
 
 static func onAddAnimal(animal:Animal) -> void:
 	gFarmArray[animal._farmIndex].onAddAnimal(animal._status._productivity);
@@ -164,6 +152,9 @@ static func onEggHatching(egg: Node) -> void:
 	gFarmArray[egg._farmIndex].onEggHatching(egg);
 static func onChickEvolution(chick: Node) -> void:
 	gFarmArray[chick._farmIndex].onEggHatching(chick);
+static func onAddPoop(animal:Animal) -> void:
+	print("SpawnPoop: ", animal._farmIndex, " / Position: ", Vector3(animal.position.x, 0, animal.position.z));
+	gFarmArray[animal._farmIndex].onAddPoop(Vector3(animal.position.x, 1, animal.position.z));
 
 func _process(delta: float) -> void:
 	for farm in gFarmArray:
@@ -193,3 +184,20 @@ func _input(event):
 			tween = create_tween();
 			tween.tween_property(gCamera, "position", gScenePosition[targetSceneIndex] + gCameraRelativePosition, gSceneInterpolationTime).set_ease(Tween.EASE_IN);
 		swiping = false;
+
+func _on_collect_button_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Click") == false:
+		return;
+
+	var gradeIndex:int = 0;
+	for container in gFarmArray[targetSceneIndex]._eggContainer:
+		addCollectEggCount(gradeIndex, container.size());
+		gradeIndex += 1;
+
+	gFarmArray[targetSceneIndex].clearEgg();
+
+func _on_clean_button_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("Click") == false:
+		return;
+
+	gFarmArray[targetSceneIndex].clearPoop();
