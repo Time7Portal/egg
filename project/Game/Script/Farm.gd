@@ -136,7 +136,7 @@ func readSaveFile(node_data):
 			var poop:Node = onAddPoop(GlobalVariable.getRandomGroundPosition() + Manager.gManagerNode.gScenePosition[_farmIndex]);
 			_poopContainer.push_back(poop);
 		
-	if(node_data.has("Poop")):
+	if(node_data.has("Egg")):
 		var eggData = node_data["Egg"];
 		var gradeIndex = 0;
 		for gradeName in Egg.Grade:
