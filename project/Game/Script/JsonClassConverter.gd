@@ -1,5 +1,7 @@
 class_name JsonClassConverter
 
+# 출처: https://github.com/EiTaNBaRiBoA/JsonClassConverter
+
 # Flag to control whether to save nested resources as separate .tres files 
 static var save_temp_resources_tres: bool = false
 
