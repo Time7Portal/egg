@@ -42,7 +42,13 @@ func _ready():
 		gFarmArray[index]._eggContainer.resize(int(Egg.Grade.COUNT));
 		gFarmArray[index]._farmIndex = index;
 	
-	readSaveFile();
+	var success = readSaveFile();
+	if(success == false):
+		for farm in gFarmArray:
+			farm.initializeFarm();
+
+		writeSaveFile();
+
 	refreshCoinUI();
 	var gradeIndex = 0;
 	for gradeName in Egg.Grade:
@@ -55,24 +61,34 @@ func _ready():
 	gTimer.start();
 	
 func _on_timer_timeout() -> void:
-	writeSaveFile(false);
+	writeSaveFile();
 	gTimer.start();
 	
-func readSaveFile():
+func readSaveFile() -> bool:
 	if not FileAccess.file_exists(GlobalVariable.gSavePath):
-		writeSaveFile(true);
+		Logger.LogDebug("No Save File");
+		return false;
 		
 	var file:FileAccess = FileAccess.open(GlobalVariable.gSavePath, FileAccess.READ);
-	Logger.LogError("No Save File!");
 		
 	var json:JSON = JSON.new();
 	var parse_result:Error = json.parse(file.get_line());
 	if not parse_result == OK:
 		Logger.LogError("JSON Parsing Error: %s in line %d" % [json.get_error_message(), json.get_error_line()]);
-		return;
+		return false;
 	
 	var node_data = json.get_data();
 	file.close();
+
+	if node_data.has("Version") == false:
+		Logger.LogDebug("No Version in SaveFile");
+		return false;
+
+	var version:int = node_data["Version"];
+
+	if version != 1:
+		Logger.LogDebug("Not Apply in SaveFile");
+		return false;
 	
 	if node_data.has("CollectionEgg"):
 		var gradeIndex = 0;
@@ -101,12 +117,15 @@ func readSaveFile():
 	if node_data.has("Farm") and node_data["Farm"].size() == gFarmArray.size():
 		for farmIndex in range(gFarmArray.size()):
 			gFarmArray[farmIndex].readSaveFile(node_data["Farm"][farmIndex]);
+
+	return true;
 	
-func writeSaveFile(initial: bool):
+func writeSaveFile():
 	Logger.LogDebug("Save: %s" % GlobalVariable.gSavePath);
 	var file = FileAccess.open(GlobalVariable.gSavePath, FileAccess.WRITE);
 	
 	var saveData = {
+			"Version": 1, 
 			"CollectionEgg": [], 
 			"Coin": gCoin,
 			"Farm":	[]
@@ -122,7 +141,7 @@ func writeSaveFile(initial: bool):
 		gradeIndex += 1;
 		
 	for farm in gFarmArray:
-		var data = farm.writeSaveFile(initial);
+		var data = farm.writeSaveFile();
 		saveData["Farm"].append(data);
 
 	var saveDataString:String = JSON.stringify(saveData);
@@ -151,7 +170,7 @@ static func onRemoveAnimal(animal:Animal) -> void:
 static func onEggHatching(egg: Node) -> void:
 	gFarmArray[egg._farmIndex].onEggHatching(egg);
 static func onChickEvolution(chick: Node) -> void:
-	gFarmArray[chick._farmIndex].onEggHatching(chick);
+	gFarmArray[chick._farmIndex].onChickEvolution(chick);
 static func onAddPoop(animal:Animal) -> void:
 	print("SpawnPoop: ", animal._farmIndex, " / Position: ", Vector3(animal.position.x, 0, animal.position.z));
 	gFarmArray[animal._farmIndex].onAddPoop(Vector3(animal.position.x, 1, animal.position.z));

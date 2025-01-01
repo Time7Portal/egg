@@ -5,11 +5,14 @@ const RAINBOW_MATERIAL = preload("res://Game/Texture/RainbowMaterial.tres")
 
 @onready var egg: MeshInstance3D = $".";
 var _farmIndex:int = 0;
-var _currentLifeTime:float = 0;
 
 class Status:
-	var _hatchTime:float = 0;
-var _status:Status;
+	@export_storage var _hatchTime:float = 0;
+@export_storage var _status:Status = Status.new();
+
+class UpdateStatus:
+	@export_storage var _currentLifeTime:float = 0;
+@export_storage var _updateStatus:UpdateStatus = UpdateStatus.new();
 
 enum Grade{
 	BRONZE, 
@@ -20,7 +23,7 @@ enum Grade{
 	RAINBOW, 
 	COUNT
 }
-@export var _grade = Grade.BRONZE:
+var _grade = Grade.BRONZE:
 	set(new_grade):
 		_grade = new_grade;
 		#print("LV." + str(_grade) + " egg spawned!")
@@ -50,12 +53,11 @@ enum Grade{
 
 
 func initializeStatus(hatchTime:float) -> void:
-	_status = Status.new();
 	_status._hatchTime = hatchTime;
 
 
 func _process(delta: float) -> void:
-	_currentLifeTime += delta;
-	if _currentLifeTime >= _status._hatchTime:
+	_updateStatus._currentLifeTime += delta;
+	if _updateStatus._currentLifeTime >= _status._hatchTime:
 		Manager.onEggHatching(self);
 		

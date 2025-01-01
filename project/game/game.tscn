@@ -2300,7 +2300,7 @@ mesh = ExtResource("21_eqqxx")
 skeleton = NodePath("../..")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.714595, 0.699539, 0, -0.699539, 0.714595, 60, 24, 20)

@@ -2,9 +2,9 @@ extends Node
 class_name Animal;
 
 #region GlobalVariable
-@export var gMaxIdleTime:float = 5.0;
-@export var gMinIdleTime:float = 0.3;
-@export var gJumpSpeed:float = 20.0;
+var gMaxIdleTime:float = 5.0;
+var gMinIdleTime:float = 0.3;
+var gJumpSpeed:float = 20.0;
 #endregion
 
 #region Animation and Movement
@@ -22,20 +22,19 @@ var _targetRotationY:float = 0.0;
 
 #region Status
 class Status:
-	var _lifeTime:float = 0;
-	var _speed:float = 0; # UnitLength per second
-	var _jumpHeight:float = 0.3; # MaxHeight, 현재는 고정으로 사용
-	var _productivity:float = 0;
+	@export_storage var _lifeTime:float = 0;
+	@export_storage var _speed:float = 0; # UnitLength per second
+	@export_storage var _jumpHeight:float = 0.3; # MaxHeight, 현재는 고정으로 사용
+	@export_storage var _productivity:float = 0;
 	
-var _status:Status;
+@export_storage var _status:Status = Status.new();
 
 class UpdateStatus:
-	var _hunger:float = 0;
-	var _happiness:float = 0;
+	@export_storage var _currentLifeTime:float = 0;
+	@export_storage var _hunger:float = 0;
+	@export_storage var _happiness:float = 0;
 
-var _updateStatus:UpdateStatus = UpdateStatus.new();
-
-var _currentLifeTime:float = 0;
+@export_storage var _updateStatus:UpdateStatus = UpdateStatus.new();
 #endregion
 
 #region Information
@@ -53,7 +52,6 @@ func _ready() -> void:
 	changeStateIDLE();
 	
 func initializeStatus(lifeTime:float, speed:float, productivity:float) -> void:
-	_status = Status.new();
 	_status._lifeTime = lifeTime;
 	_status._speed = speed;
 	_status._productivity = productivity;
@@ -63,11 +61,11 @@ func _exit_tree() -> void:
 	Manager.onRemoveAnimal(self);
 	
 func processLifeTime() -> void:
-	if _currentLifeTime >= _status._lifeTime:
+	if _updateStatus._currentLifeTime >= _status._lifeTime:
 		self.queue_free();
 
 func _process(delta: float) -> void:
-	_currentLifeTime += delta;
+	_updateStatus._currentLifeTime += delta;
 	
 	match _state:
 		STATE.IDLE:

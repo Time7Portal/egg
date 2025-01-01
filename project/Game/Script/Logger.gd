@@ -95,9 +95,11 @@ static func LogWarning(message : String)  -> void:
 static func LogError(message : String)  -> void:
 	_LogMessage(message, EMessageSeverity.Error)
 	
-static func LogAssert(condition, message: String) -> void:
+static func LogAssert(condition:bool, message: String) -> void:
 	if condition:
 		return;
+
+	assert(condition, message);
 	LogError(message);
 	 
 # | Description: Sets the current logging level
