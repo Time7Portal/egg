@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://dgih8jlkfnnmt"]
 
-[ext_resource type="ArrayMesh" uid="uid://b84p20ek2m55o" path="res://Game/Model/poop.res" id="1_6s5bx"]
+[ext_resource type="ArrayMesh" uid="uid://duuse0k7geefe" path="res://Game/Model/poop2.res" id="1_3x2me"]
 
 [node name="Mesh" type="MeshInstance3D"]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.0964454, 0)
-mesh = ExtResource("1_6s5bx")
+transform = Transform3D(0.04, 0, 0, 0, 4.76995e-10, 0.04, 0, -0.04, 4.76995e-10, 0, 0.0964454, 0)
+mesh = ExtResource("1_3x2me")

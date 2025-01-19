@@ -1837,14 +1837,14 @@ anchor_bottom = 1.0
 offset_bottom = -180.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 60
 current_tab = 0
 
-[node name="사료" type="Control" parent="Panel/TabContainer"]
+[node name="ㅤ사료ㅤ" type="Control" parent="Panel/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="장비" type="Control" parent="Panel/TabContainer"]
+[node name="ㅤ장비ㅤ" type="Control" parent="Panel/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
@@ -1889,16 +1889,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_ghn3i")
 text = "구매
-"
-
-[node name="TempLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 45.0
-offset_top = 176.0
-offset_right = 671.0
-offset_bottom = 315.0
-theme_override_font_sizes/font_size = 100
-text = "임시 상점화면
 "
 
 [connection signal="gui_input" from="BottomButtons/ExitButton" to="." method="_on_exit_button_gui_input"]
